@@ -1,6 +1,6 @@
-# simple_mvc_for_extjs
+# simple_mvcd_for_extjs
 
-Simple php mvc framework for extjs
+First simple php mvcd(model view controller data) framework for extjs
 
 please buy ExtJS Php Wrapper on codecanyon others all are opensource<br>
 <a href="https://codecanyon.net/item/extjs-easy-php-wrapper/4265716">Extjs Wrapper</a> <br>
