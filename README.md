@@ -6,4 +6,4 @@ please buy ExtJS Php Wrapper on codecanyon others all are opensource<br>
 <a href="https://codecanyon.net/item/extjs-easy-php-wrapper/4265716">Extjs Wrapper</a> <br>
 
 Email : srkgns@gmail.com <br>
-<a href="">Donate</a> <br>
+<a href="http://paypal.com">Donation accepted by my paypal send my email over paypal</a> <br>
