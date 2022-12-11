@@ -1,0 +1,20 @@
+CariPro 2 
+
+Ön Muhasebe uygulamasýdýr tek düzen muhasebe sistemiyle lalakasý yoktur.
+Küçük ve orta çaplý þirketler ve adi ortaklýk yoluyla kurulmuþ firmlarýn ihtiyaçlarýný rahatlýkla
+karþýlyabilececk bir uygulamadýr.
+
+Yaklaþýk 1,5 sene kadar öncee yazdýðým Cari Pro 2 de bir kýsmýný Kendi yazdýðým TechComp larýný , 
+Express QuantumGridi ve bi kaç güncelleme yaptýðým ExtLib componentlerini kullandým quantum hariç
+diðer komplarý component klasörüne koydum bu programý Delphi 6 ile yazdým ve database olark 
+FireBird 1.1 versionunu kullandým (O zamanlar en yüksek versiyonu buydu.) 
+
+Program Ýþleyiþi :
+
+Program içerisinde çok az hesaplama yapýlýr hesap kitap iþlemlerini genellikle datbase içerisinde 
+yazdýðým Trigger ve procedurler ile hallettim databasede hiç function kullanmadým ve Ýndexde eklemedim
+(1,5 yýl önce firebird de index eklemeyi bilmiyordum :D ) o yüzden yaklaþýk 15.000 kayýttan sonra programda 
+aþýrý derecede yavaþlama görülüyor. bu yavaþlamanýn bir sebebide içeride kullandýðým triggerlar ve procedurlerdir
+ama 15000 kayýt küçük ve orta çaplý iþletmeler için yeterli oluyor 2. yýla þirketi devretme özelliði ile toplamlarýný
+alarak yeni bir sayfa açýyor ve data boþalýyor...
+

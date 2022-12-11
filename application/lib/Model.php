@@ -1,5 +1,5 @@
 <?php 
-	class Model extends Object implements IModel{
+	class Model extends Object_ implements IModel{
 		
 		function __construct() {
 			parent::__construct();

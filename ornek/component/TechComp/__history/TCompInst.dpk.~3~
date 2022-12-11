@@ -1,0 +1,109 @@
+package TCompInst;
+
+{$R *.res}
+{$R 'TechGradPanel.dcr'}
+{$R 'TechComboBox.dcr'}
+{$R 'TechCheckBox.dcr'}
+{$R 'TechButton.dcr'}
+{$R 'TechXPEdit.dcr'}
+{$R 'TechRadioButton.dcr'}
+{$R 'Audio32.dcr'}
+{$R 'XPMenu.dcr'}
+{$R 'PanelButton.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Tech Comp'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  rtl,
+  dbrtl,
+  inet,
+  vcl,
+  adortl,
+  ibxpress,
+  tee,
+  Jcl,
+  JvSystemD7R,
+  IndyCore70,
+  IndySystem70,
+  IndyProtocols70,
+  paket,
+  MedyaAnaPaket,
+  A406_R70,
+  JvCoreD7R,
+  vcljpg,
+  JclVcl;
+
+contains
+  TechIBSQL in 'TechIBSQL.pas',
+  TechIBQuery in 'TechIBQuery.pas',
+  TechGradPanel in 'TechGradPanel.pas',
+  TechGradient in 'TechGradient.pas',
+  TechEdit in 'TechEdit.pas',
+  TechDBValueListEditor in 'TechDBValueListEditor.pas',
+  TechDBTreeView in 'TechDBTreeView.pas',
+  TechDBText in 'TechDBText.pas',
+  TechDBMonthCalendar in 'TechDBMonthCalendar.pas',
+  TechDBListView in 'TechDBListView.pas',
+  TechDBListBox in 'TechDBListBox.pas',
+  TechDBDateTimePicker in 'TechDBDateTimePicker.pas',
+  TechDBDateEdit in 'TechDBDateEdit.pas',
+  TechDBCheckListBox in 'TechDBCheckListBox.pas',
+  TechDBCheckBox in 'TechDBCheckBox.pas',
+  TechDateEdit in 'TechDateEdit.pas',
+  TechCustomControl in 'TechCustomControl.pas',
+  TechComboBox in 'TechComboBox.pas',
+  TechCombo in 'TechCombo.pas',
+  TechCheckDBGrid in 'TechCheckDBGrid.pas',
+  TechCheckBox in 'TechCheckBox.pas',
+  TechButton in 'TechButton.pas',
+  DBTechRichEdit in 'DBTechRichEdit.pas',
+  DBTechLookupCombo in 'DBTechLookupCombo.pas',
+  DBTechCombo in 'DBTechCombo.pas',
+  TechXPEdit in 'TechXPEdit.pas',
+  TechUtilitys in 'TechUtilitys.pas',
+  TechSerialMaker in 'TechSerialMaker.pas',
+  TechSearchEdit in 'TechSearchEdit.pas',
+  TechRadioButton in 'TechRadioButton.pas',
+  TechLabel in 'TechLabel.pas',
+  TechWordExport in 'TechWordExport.pas',
+  TechDBCombobox in 'TechDBCombobox.pas',
+  TechDateTimePicker in 'TechDateTimePicker.pas',
+  TechDBGrid in 'TechDBGrid.pas',
+  DBTechEdit in 'DBTechEdit.pas',
+  UTBASE64 in 'UTBASE64.PAS',
+  Audio in 'Audio.pas',
+  XPMenu in 'XPMenu.pas',
+  TechTitleListBox in 'TechTitleListBox.pas',
+  TechThreadTimer in 'TechThreadTimer.pas',
+  TechGradScroll in 'TechGradScroll.pas',
+  TechKlavye in 'TechKlavye.pas',
+  PanelButton in 'PanelButton.pas',
+  ModBusProtocol in 'ModBusProtocol.pas',
+  ButtonList in 'ButtonList.pas';
+
+end.

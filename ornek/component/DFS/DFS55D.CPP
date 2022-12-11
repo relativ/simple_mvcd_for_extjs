@@ -1,0 +1,74 @@
+//---------------------------------------------------------------------------
+#include <vcl.h>
+#pragma hdrstop
+USERES("DFS55D.res");
+USEPACKAGE("VCLX50.bpi");
+USEPACKAGE("VCL50.bpi");
+USEUNIT("BrowseDr.pas");
+USEUNIT("BrowseDrReg.pas");
+USERES("BrowseDrReg.dcr");
+USEUNIT("CBtnForm.pas");
+USEUNIT("CBtnReg.pas");
+USEUNIT("ColorAEd.pas");
+USEUNIT("DFSAbout.pas");
+USEUNIT("DFSClrBn.pas");
+USEUNIT("DFSKb.pas");
+USEUNIT("DFSLayeredForm.pas");
+USEUNIT("DFSLayeredFormReg.pas");
+USEUNIT("DFSSplitter.pas");
+USEUNIT("DFSSplitterReg.pas");
+USEUNIT("DFSStatusBar.pas");
+USEUNIT("DFSStatusBarReg.pas");
+USEUNIT("DFSStickyForm.pas");
+USEUNIT("DFSStickyFormReg.pas");
+USEUNIT("DFSToolBar.pas");
+USEUNIT("DFSToolBarReg.pas");
+USEUNIT("DlgTest.pas");
+USEUNIT("DSAMsg.pas");
+USEUNIT("DSAMsgReg.pas");
+USERES("DSAMsgReg.dcr");
+USEUNIT("ElpsPanl.pas");
+USEUNIT("ElPnlReg.pas");
+USEUNIT("ELV_Reg.pas");
+USERES("ELV_Reg.dcr");
+USEUNIT("EnhListView.pas");
+USEUNIT("ExtListView.pas");
+USEUNIT("ExtProgressBar.pas");
+USEUNIT("ExtProgressBarReg.pas");
+USEUNIT("FileChange.pas");
+USEUNIT("GBarReg.pas");
+USEUNIT("GrabBar.pas");
+USEUNIT("GradForm.pas");
+USEUNIT("GradFormReg.pas");
+USERES("GradFormReg.dcr");
+USEUNIT("IconCtls.pas");
+USEUNIT("IcCtlReg.pas");
+USEUNIT("ItemProp.pas");
+USEUNIT("MaskSearch.pas");
+USEUNIT("MRUFList.pas");
+USEUNIT("MRUFLReg.pas");
+USEUNIT("Pidlhelp.pas");
+USEUNIT("PgSetup.pas");
+USEUNIT("PgSetupReg.pas");
+USERES("PgSetupReg.dcr");
+USEUNIT("SystemComboBox.pas");
+USEUNIT("SystemControlPack.pas");
+USEUNIT("SystemControlPackReg.pas");
+USERES("SystemControlPackReg.dcr");
+USEUNIT("SystemImageList.pas");
+USEUNIT("SystemImageListReg.pas");
+USEUNIT("SystemListView.pas");
+USEUNIT("SystemTreeView.pas");
+USEUNIT("VersInfo.pas");
+USEUNIT("VInfoReg.pas");
+USEUNIT("_Res__IDs.pas");
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+//---------------------------------------------------------------------------
+//   Package source.
+//---------------------------------------------------------------------------
+int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*)
+{
+  return 1;
+}
+//---------------------------------------------------------------------------

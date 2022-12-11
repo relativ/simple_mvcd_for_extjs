@@ -1,0 +1,71 @@
+Delphi Free Stuff Package
+
+
+Description:
+  All components from the Delphi Free Stuff web site (www.delphifreestuff.com).
+  See the individual text files for a description of each component.
+
+
+Contact Information:
+  The lateset version will always be available on the web at:
+    http://www.delphifreestuff.com
+  If you have any questions, comments or suggestions, please use the Delphi
+  Free Stuff Support Forum at: 
+    http://www.delphifreestuff.com/discus/
+  If, for some reason, you can not use the web-based support forum, you can
+  email me at bstowers@delphifreestuff.com.  However, the support forum will
+  always take precedence over direct email since it provides a resource that
+  others can use when they have a problem.  Every message posted to the forum
+  is emailed directly to this account, so emailing me directly will not get 
+  your message to me any faster.  It will only make the message less important
+  for me to respond to since only one person (you) is benefiting from it
+  instead of everyone interested.  Having said all that, please do email me 
+  directly if it is regarding something that isn't really support related, 
+  i.e. just to say thanks (as novel as that idea is).  
+
+
+Installation:
+  Delphi 1:
+    * Select the 'Options | Install Components' menu item.
+    * In the Install Components dialog, click the Add button.
+    * In the Add Module dialog, enter the full path name of each of the 
+      components' registration unit (the unit that ends with 'Reg.pas', i.e. 
+      'VInfoReg.pas') and click OK.
+    * Repeat the last two steps for all Delphi 1 compatible components.  
+      These include:
+        CBtnReg.pas, DlgTest.pas, ElPnlReg.pas, GBarReg.pas, IcCtlReg.pas, 
+        MRUFLReg.pas, VInfoReg.pas.
+    * In the Install Components dialog, click OK.
+    * The component library will be rebuilt and a new tab named 'DFS' will
+      be available on the Component Palette.
+  
+  Delphi 2, C++Builder 1:
+    * Select the 'Component | Install' menu item.
+    * In the Install Components dialog, click the Add button.
+    * In the Add Module dialog, enter the full path name of each of the 
+      components' registration unit (the unit that ends with 'Reg.pas', i.e. 
+      'VInfoReg.pas') and click OK.
+    * Repeat the last two steps for all Delphi 2 and C++Builder 1 compatible 
+      components. These include:
+        CBtnReg.pas, DlgTest.pas, ElPnlReg.pas, ELV_Reg.pas, 
+        ExtProgressBarReg.pas, GBarReg.pas, GradFormReg.pas, IcCtlReg.pas, 
+        MRUFLReg.pas, PgSetupReg.pas, SystemImageListReg.pas, 
+        SystemControlPackReg.pas, and VInfoReg.pas.
+    * In the Install Components dialog, click OK.
+    * The component library will be rebuilt and a new tab named 'DFS' will be 
+      available on the Component Palette.
+  
+  Delphi 3 and up, C++Builder 3 and up:
+    * Open the appropriate package file in your IDE by selecting File | Open.
+    * In the resulting package window, click the Install button.  If this 
+      package has already been installed (i.e. you are updating existing
+      files), click the Compile button instead.
+
+
+Notes:
+  * There are no demos included in this distribution.  If you want a demo app
+    for one of the components, you will need to download that individual 
+    component from the web site.
+  * No version history is kept for this file.  It simply contains the latest 
+    version of everything.  For individual component history/release notes,
+    see the individual text files.

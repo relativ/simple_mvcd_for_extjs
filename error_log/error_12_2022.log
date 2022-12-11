@@ -1,0 +1,11 @@
+File : C:\laragon\www\muhasebe\application\model\database.php
+Code : 1049
+Line : 19
+Message : SQLSTATE[HY000] [1049] Unknown database 'tcdderp'
+
+Trace : #0 C:\laragon\www\muhasebe\application\model\database.php(19): PDO->__construct('mysql:dbname=tc...', 'root', '')
+#1 C:\laragon\www\muhasebe\application\app.php(15): Database->__construct()
+#2 C:\laragon\www\muhasebe\application\app.php(59): Application->__construct()
+#3 C:\laragon\www\muhasebe\index.php(6): Application::run()
+#4 {main}
+------------------------------------------------------------------------------------

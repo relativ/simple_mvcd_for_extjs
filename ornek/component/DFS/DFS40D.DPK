@@ -1,0 +1,94 @@
+package DFS40D;
+
+{$R *.RES}
+{$R 'BrowseDrReg.dcr'}
+{$R 'DSAMsgReg.dcr'}
+{$R 'ELV_Reg.dcr'}
+{$R 'GradFormReg.dcr'}
+{$R 'PgSetupReg.dcr'}
+{$R 'SystemControlPackReg.dcr'}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'DFS Components'}
+{$DESIGNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  vcl40,
+  VCLX40;
+
+contains
+  BrowseDr in 'BrowseDr.pas',
+  BrowseDrReg in 'BrowseDrReg.pas',
+  DFSAbout in 'DFSAbout.pas',
+  ColorAEd in 'ColorAEd.pas' {ColorArrayEditor},
+  CBtnForm in 'CBtnForm.pas' {DFSColorButtonPalette},
+  DFSClrBn in 'DFSClrBn.pas',
+  CBtnReg in 'CBtnReg.pas',
+  DFSSplitterReg in 'DFSSplitterReg.pas',
+  DFSSplitter in 'DFSSplitter.pas',
+  DFSStatusBarReg in 'DFSStatusBarReg.pas',
+  dfsStatusBar in 'DFSStatusBar.pas',
+  DFSKb in 'DFSKb.pas',
+  DFSToolBarReg in 'DFSToolBarReg.pas',
+  DFSToolBar in 'DFSToolBar.pas',
+  DlgTest in 'DlgTest.pas',
+  DSAMsgReg in 'DSAMsgReg.pas',
+  DSAMsg in 'DSAMsg.pas',
+  ElpsPanl in 'ElpsPanl.pas',
+  ElPnlReg in 'ElPnlReg.pas',
+  ExtListView in 'ExtListView.pas',
+  EnhListView in 'EnhListView.pas',
+  ELV_Reg in 'ELV_Reg.pas',
+  ExtProgressBarReg in 'ExtProgressBarReg.pas',
+  ExtProgressBar in 'ExtProgressBar.pas',
+  GBarReg in 'GBarReg.pas',
+  GrabBar in 'GrabBar.pas',
+  GradFormReg in 'GradFormReg.pas',
+  GradForm in 'GradForm.pas',
+  IconCtls in 'IconCtls.pas',
+  IcCtlReg in 'IcCtlReg.pas',
+  MRUFLReg in 'MRUFLReg.pas',
+  MRUFList in 'MRUFList.pas',
+  PgSetupReg in 'PgSetupReg.pas',
+  PgSetup in 'PgSetup.pas',
+  VInfoReg in 'VInfoReg.pas',
+  VersInfo in 'versinfo.pas',
+  SystemImageListReg in 'SystemImageListReg.pas',
+  SystemImageList in 'SystemImageList.pas',
+  SystemComboBox in 'SystemComboBox.pas',
+  SystemControlPack in 'SystemControlPack.pas',
+  SystemControlPackReg in 'SystemControlPackReg.pas',
+  SystemListView in 'SystemListView.pas',
+  SystemTreeView in 'SystemTreeView.pas',
+  ItemProp in 'ItemProp.pas',
+  _RES__IDS in '_Res__IDs.pas',
+  MaskSearch in 'MaskSearch.pas',
+  PidlHelp in 'PidlHelp.pas',
+  FileChange in 'FileChange.pas',
+  DFSLayeredForm in 'DFSLayeredForm.pas',
+  DFSLayeredFormReg in 'DFSLayeredFormReg.pas',
+  DFSStickyFormReg in 'DFSStickyFormReg.pas',
+  DFSStickyForm in 'DFSStickyForm.pas';
+
+end.
+

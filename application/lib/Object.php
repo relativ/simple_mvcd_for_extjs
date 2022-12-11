@@ -1,6 +1,6 @@
 <?php
 	ob_start(); 
-	class Object {
+	class Object_ {
 		function __construct(){
 			Application::$controls[get_class($this)] = &$this;
 		}

@@ -1,0 +1,951 @@
+System Control Pack v0.98.5 Beta
+
+This is BETA software.  It is not guaranteed to do ANYTHING useful at all.
+
+                      R E A D   T H I S   N O W ! ! !
+
+I hope that got your attention.  This component requires a unit that
+provides access to the Win95/NT 4.0 Shell Namespace API.  Delphi 2.0 did not
+include this import, but the v2.01 update does.  Also, Mr. Pat Ritchey was
+kind enough to write one, which I think was the basis for Borland's (same
+bugs in both units, must be the same).  C++Builder 1.0's ShlObj.pas also suffers
+from the same problems.  Regardless of which you use, you will have to do some
+extra work because both contain errors that will prevent this component from
+working properly (or even compiling, probably).  To implement these changes,
+read the ShellFix.txt file that should have been included with this file.
+If you use Delphi 3 or higher, or C++Builder 3 or higher, you will not need to
+worry about any of this.  No bugs (that effect these components anyway).
+
+
+Description:
+  Tree view, list view, and combobox controls that act like the controls in the
+  Windows Explorer.
+
+
+Contact Information:
+  The lateset version will always be available on the web at:
+    http://www.delphifreestuff.com
+  If you have any questions, comments or suggestions, please use the Delphi
+  Free Stuff Support Forum at: 
+    http://www.delphifreestuff.com/discus/
+  If, for some reason, you can not use the web-based support forum, you can
+  email me at bstowers@delphifreestuff.com.  However, the support forum will
+  always take precedence over direct email since it provides a resource that
+  others can use when they have a problem.  Every message posted to the forum
+  is emailed directly to this account, so emailing me directly will not get 
+  your message to me any faster.  It will only make the message less important
+  for me to respond to since only one person (you) is benefiting from it
+  instead of everyone interested.  Having said all that, please do email me 
+  directly if it is regarding something that isn't really support related, 
+  i.e. just to say thanks (as novel as that idea is).  
+
+
+Installation:
+  Delphi 1:
+    * This component is not compatible with Delphi 1.
+  
+  Delphi 2, C++Builder 1:
+    * Select the 'Component | Install' menu item.
+    * In the Install Components dialog, click the Add button.
+    * In the Add Module dialog, enter the full path name of the component's
+      registration unit (the unit that ends with 'Reg.pas', i.e.
+      'BrowseDrReg.pas') and click OK.
+    * In the Add Module dialog, click OK.
+    * The component library will be rebuilt and a new tab named 'DFS' will be
+      available on the Component Palette.
+
+  Delphi 3, 4, 5, C++Builder 3 & 4:
+    * Do one of the following:
+      + Create a new package by selecting File | New and choosing Package from
+        the New tab in the dialog.
+      + Open an existing package file.  I suggest you do this if you already 
+        have a package that you like to use for small, third party components.
+        I specifically have a package named "3rdParty.dpk" that I use for 
+        small components that come from other people.  Or, if you are using
+        several of my components, you might create a "DFS.dpk" package and 
+        use it for all of my DFS components.
+    * In the resulting package window, click the Add button.
+    * In the Add dialog, on the Add Unit tab, enter the full path name of the
+      component's registration unit (the unit that ends with 'Reg.pas', i.e.
+      'BrowseDrReg.pas') and click OK.
+    * You may want to add the other source files (*.pas) to the package as
+      well in the same manner as you did the registration unit.  While this is
+      not required, not doing it will cause compiler warnings when the package
+      is compiled.  The component will function fine either way, but I
+      personally find the warnings very irritating and am not happy until
+      every compiler warning and hint is gone.  NOTE:  If you use C++Builder 3,
+      do not install the other source units.  See Known Issuses section below.
+    * If this package is new, or it has never been installed, click the
+      Install button in the package window.  If this package is already
+      installed in Delphi, click the Compile button.
+
+  C++Builder 5 and up:
+    * Perform the "Delphi 3 and up, C++Builder 3 and up" steps above, except
+      for the last step (Compile or Install).
+    * Select the package the component has been added to, and choose 
+      Project | Edit Option Source to open the package options in the editor.
+    * In the entry for PFLAGS, add the "-LUvcl50" option.  For example:
+        <PFLAGS value="-$YD -$W -$O -v -JPHNE -M -LUvcl50"/>
+    * Perform the final step from above, Compile or Install.
+    * For Borland's official word on this situation, open the C++Builder help
+      file and search the index for "dsgnintf.dcu" and see the "Compiling
+      packages with DsgnIntf" section.
+
+  Delphi 6 and up:
+    * Perform the "Delphi 3, 4, 5, C++Builder 3 & 4" steps above, except
+      for the last step (Compile or Install).
+    * Add the DesignIDE package to the Requires list of the package into which
+      the component is being installed.
+    * Perform the final step from above, Compile or Install.
+    * This is necessary because of changes to the design-time support units
+      introduced in Delphi 6.  For complete information, see the Del6New.hlp
+      file in your Delphi 6 Help directory.  In the index, search for
+      "upgrade issues" and in the resulting list of topics, select the
+      "DsgnIntf renamed and related changes" topic.
+
+
+Conditional Defines:
+  These units makes extensive use of conditional defines to control many aspects
+  of how and what things are compiled.  Usually these are used to effect code
+  size or change how a feature works, but some are also for debugging purposes.
+  The following is a list of the defines that are used and how.  These defines
+  are all found in the SystemControlPack.inc file.  The prefix used in each
+  name identifies what is effected:
+    DFS   --  Prefix I use for all my defines to avoid clashing with other
+              defines that may be in use.  DFS = Delphi Free Stuff
+    SCP   --  Indicates that the define effects all components.  SCP = System
+              Control Pack
+    STV   --  Indicates that the define effects only the TSystemTreeView
+              component.  STV = System Tree View
+    SLV   --  Indicates that the define effects only the TSystemListView
+              component.
+    SCB   --  Indicates that the define effects only the TSystemComboBox
+              component.  Currently, there are none of these.
+  The defines used are as follows:
+
+  * DFS_SCP_SYSTREEVIEW, DFS_SCP_SYSLISTVIEW, DFS_SCP_SYSCOMBOBOX: If you
+      undefine any of these, then that/those components will no longer be
+      compiled.  For example, if you undefined DFS_SCP_SYSLISTVIEW, the
+      TSystemListView component will not be compiled, and the tree view and
+      combo box components will no longer have a ListView property to link to.
+      This resulted in a 70k saving in the compiled EXE of a test app that used
+      only the TSystemTreeView component.  The down side to this is that if you
+      use TSystemListView for some projects and not for others, you will either
+      have to leave it enabled for all, or have one heck of a code maintenance
+      nightmare.  One solution to this could be to remove the
+      DFS_SCP_SYSLISTVIEW define from the include file completely and add it to
+      the Project | Options | Directories/Conditionals of the design-time
+      package you install the component in.  Then, you would add
+      DFS_SCP_SYSLISTVIEW to the options of the projects that need it, and leave
+      it out of those that don't. This would allow you to control what is
+      compiled into the Delphi IDE independant of what is compiled into your
+      projects without having to change the SystemControlPack.inc file in
+      between.  I have not tested this solution, but it works in theory.  :)
+  * DFS_STV_FASTMODE and DFS_SLV_FASTMODE: These defines are not enabled by
+      default.  If you enable them, the components will populate/display much
+      faster.  The reason is that the actual item data such as the Caption and
+      subitem text, the image index, etc. aren't retrieved when the list/tree is
+      populated.  Instead, the system will ask (via a CN_NOTIFY message) for the
+      data when it needs a particular item's data and it is supplied only then.
+      So, it doesn't take nearly as long to add a large number of items.  But
+      (there's always a price to be paid), you will lose access to this data via
+      the Nodes (treeview) or Items property (listview).  That means you won't
+      be able to do stuff like:
+
+        ShowMessage(MySysListView.Items[0].Caption);
+
+      However, you will still be able to do the equivalent using stuff like:
+
+        ShowMessage(MyList.GetFullPath(MyList.Selected));
+
+      So, if you need the text or image index stuff, leave the define off. But,
+      if you don't, turn it on by removing the period and it'll be faster. In my
+      informal testing, listing my windows directory went from 12 seconds to 2
+      seconds.  You'll only see these big gains on directories with a lot of
+      files, though.  Many thanks go to Andei V. Rasskazov for pointing this
+      technique out.
+  * DFS_SLV_USE_ENHLISTVIEW and DFS_SLV_USE_EXTLISTVIEW: These are not enabled
+      by default.  They are useful only if you also have my TEnhListView and
+      TExtListView components.  You will need v3.13 or later of these components
+      for this to work.  Enabling ONE of these (never enable both) will cause
+      TSystemListView to descend from the corresponding TEnh/ExtListView class,
+      giving you all of that class' features as well.  WARNING:  This is just a
+      simple implemenation currently, and there are likely to be problems.  Only
+      use these if you want to help me work out the bugs in it.  Defining either
+      of these will also cause DFS_SLV_USING_ELV to be defined.  I use this
+      internally when I want to know if either of the above are defined and
+      I don't care which one.  You should not define DFS_SLV_USING_ELV yourself.
+  * DFS_STV_FILECHANGES: Controls whether the treeview will "watch" the
+      directory that is currently displayed for changes, i.e. a new directory
+      or file created, an existing one deleted, etc. and automatically refresh
+      when this happens.  This was originally put in so that this feature could
+      be turned off during development if nasty bugs were found.  However, that
+      was quite a while back, and "change watching" seems to be quite stable
+      now.  The only reason you might want to turn it off now is to save
+      yourself the 3.5 kb of space it adds to your compiled EXE.  This define
+      will probably be removed entirely unless someone makes a strong case for
+      leaving it.
+  * DFS_DEBUG: This is a define that I use internally for debugging the
+      components.  It causes a unit to be used that is not distributed, so it
+      is most likely useless to anyone but me.
+
+
+Working Notes:
+  * I really need to rip all the namespace stuff out and put it in it's own
+    class so that you could use it however you wanted, not just in this comp.
+  * The included test project creates a TSystemTreeView object on the fly so
+    that you don't have to install the component in your library.  I'm
+    fairly confident that the component is stable, but if you don't want to
+    install, you don't have to just to see the demo.
+  * If anyone knows how to determine the type of object you have given it's
+    PIDL, I'd love to know it.  Right now, if it's not a file system object,
+    you just get it's name.  I need to determine other types like the
+    printer folder, control panel folder, network servers, network
+    workgroups, etc.
+    New information:  I've noticed that a commercial Explorer replacement that
+    I have (PowerDesk from Mijenix) has this exact behavior, i.e. if you select
+    the Printers folder, Recycle Bin, etc. you get just a single "Name" column.
+    Hey, if a bunch of paid programmers can't figure it out, I probably won't
+    either, so I'm inclined to call this "as-designed" behavior.  Comments?
+
+
+Items On The To-Do List:
+  * A few more bugs still in my email.
+  * CMF_CANRENAME flag for context menu.  Can't just add it as it will cause
+    OLE errors, i.e. system won't handle it.  I need to determine if I can
+    use "magic numbers" to interpret rename and other unhandled commands to
+    to catch them and process them myself.
+  * Use timeGetTime to decide if I should show the hourglass or not in
+    EnumerateFolders methods.
+  * Change GetItemAttrs so it uses a nice Delphi set instead of API values.
+  * Do away with ShowFolders/Files and ShowHiddenFolders/Files properties
+    and replace with a set that includes all the stanadard stuff: hidden,
+    system, read-only, etc.  AttrMask property.
+  * Add properties for the stuff in the registry key HKCU\Software\Microsoft\
+    Windows\CurrentVersion\Explorer\Advanced and use those values as default
+    values for the properties.  This has stuff like hide extensions, etc.
+  * I may or may not implement drag/drop with the shell.  In the meantime,
+    Dieter Steinwedel (dsteinwe@rz.uni-osnabrueck.de) has a fine d-n-d shell
+    component that works with any TWinControl descendant.  It can be found at
+    http://godard.oec.uni-osnabrueck.de/student_home/dsteinwe/delphi/DietersDelphiSite.htm
+    There are probably others as well, I haven't looked much.
+  * "Cut" context menu command does not show the file icon as disabled yet.
+  * Hidden files have same problem as cut files (item above).
+
+
+Known Issues:
+  * C++Builder 3 users:  You must install only the registration unit 
+    (SystemControlPackReg.pas) into the package you compile the component into.
+    If the package also includes the other source files, you will get error
+    messages about DCLSTD35.LIB, which doesn't exist.  It has to do with the
+    fact that the source lists ImgList in the uses clause, even though I have
+    properly $IFDEFed it out.  Must be some error in the C3 parser that is
+    causing it to see this unit, and in C3 this unit is some design-time unit or
+    something. It results in the IDE continuously inserting DCLSTD35.LIB into
+    the project file, and there's no such file.  Manually removing it from the
+    project does not help, it just sticks it back in.  The only way to get it to
+    stop is to manually edit the code and remove the reference to ImgList, or to
+    not include the source file in the package.  Bizarre.
+  * C++Builder 3 users:  You must edit the source files to remove the ImgList
+    unit from the uses clauses of the units.  I have properly $IFDEFed out
+    this unit, but some error in the C3 parser is causing it at some point to
+    see this unit, and in C3 this unit is some design-time unit or something.
+    It results in the IDE continuously inserting DCLSTD35.LIB into the project
+    file, and there's no such file.  Manually removing it from the project
+    does not help, it just sticks it back in.  The only way to get it to stop
+    is to manually edit the code and remove the reference to ImgList. Bizarre.
+  * None of the demos are probably going to work well with all the new stuff.
+    It's late and I really want to get this stuff out, so I'll update them
+    in the next version.
+  * The list view incorrectly thinks that some folders contain file system stuff
+    when the really don't.  For example, it thinks the Control Panel folder
+    does, so it get's all the columns for a file directory list.  This is a bug
+    introduced with the new way of doing things in v0.96 and I've not yet been
+    able to figure it out.  If anyone has any clues, I'd really appreciate it.
+    It didn't happen in v0.95, but things were a lot different in the list
+    population in that version.
+  * Combo box does not like working with a treeview that doesn't have rfDesktop
+    as it's root node.  I'm not sure if you'd really ever need to have a combo
+    that used something besides the desktop as a root, so at this point and not
+    going to invest the somewhat large amount of time to work on doing it.  If
+    you do need this, let me know and I'll add it to the to-do list.
+  * The tree is hitting the all the sub nodes of a just expanded node again.
+    For example, when you expand the "My Computer" node, it hits each item; one
+    of those is likely a floppy drive, and that slows things down as it cranks
+    on it for a second.  No error message, but the delay is irritating.  And I
+    fixed it once before, too!
+  * Changing the RootFolder of a tree doesn't update a linked listview at design
+    time.  This saved me a ton of work, and it's really not that important at
+    design-time anyway, is it?
+  * Double clicking on a computer name in a listview that is linked to a
+    rfNetHood rooted treeview will not move into that computer.
+  * If using the Checkboxes property and you cause the treeview window to be
+    recreated by doing something like changing the BorderStyle property or
+    something, the checked values will be lost.  I will fix this in the future.
+  * Changing the Color property to anything other than clWindow is strongly
+    discouraged.  The images will still use the clWindow color as their
+    background, so you'll end up with a pretty odd looking tree/list.  The
+    reason is that if I changed the background color of the image list(s), it
+    would effect the entire system.  That is, Explorer would then have a
+    tree/list with a clWindow background color but the images would have your
+    new color around them.  The image lists are a shared, system-wide resource
+    and a change like this simply can not be allowed.  There is one alternative:
+    a copy of the system image list can be made, and that used instead of the
+    real system image list.  It can be changed in any way without effecting the
+    rest of the system.  The problems I have with this are:  1) It's an awful
+    lot of trouble to implement, 2) It's generally very slow since the system
+    image list is quite large.  You'd have a delay of a second or three before
+    your app started.  If enough people ask me for this to be added, I will
+    reconsider, but for now I'm just considering it a known issue.
+
+
+Beta Revision History:
+0.98.5 + Added RecreateColumns method to TdfsSystemListView.
+       + Fixed problem with SetColumnWidths not using new values until window
+         was recreated or repopulated.
+       + Updated for Delphi 6 compatibility.  See updated install directions
+         above.
+0.98.4 + Updated for C++Builder 5 compatibility.
+0.98.3 + IShellDetails stuff in SystemControlPack.pas has been removed.  I was
+         investigating this, but found out it was only available on Windows 
+         2000.  It was causing compiler problems for C++Builder, so I've 
+         removed it from the source entirely (it was never being used).
+       + Fixed problem with FileMask in tree view.
+       + Fixed memory leak problem with list view.
+0.98.2 + Fixed some nasty problems with rfFileSystem RootFolder type.
+       + Fixed bizarre D5 problem with deleting a tree from a form in the IDE.
+       + Fixed problem with main win hook not being released when component
+         was destroyed.  Thanks to Matthieu Roger for this. 
+0.98   + Fixed redeclaration problem in C++Builder 3.
+       + Fixed nasty recursion bug when using rfFileSystem RootFolder value.
+       + Bill Miller was nice enough to do a component bitmap for the combo box.
+       + Had some problems with right-click not bringing up the context menu
+         in the system and list view under D5.  Fixed.
+       + Deleting a file in a root directory would cause the list view to "fall
+         up" one level higher that where it was supposed to be on refresh.
+       + Fixed a couple of problems having to do with the read delay timer.
+         Could totally break it if window handle was recreated.  Could get
+         "Control has no parent window" errors.
+       + Changing treeview file mask to exclude the currently selected filename
+         would cause trouble.
+       + Removing a directory that was the selected directory would not refresh
+         the display.
+       + Updated information about the DCLSTD35.LIB Known Issue in C3.  See
+         above.
+       + I've removed the TFolderItemData.FileSize property for C++Builder 1 &
+         3.  They didn't work because I use the Delphi Comp data type, and
+         while Builder has a Comp class for this type of thing, it won't
+         automatically support Delphi code using Comp.  If you need the file
+         size in C1/C3, you'll have to use the FileSizeHigh and FileSizeLow
+         properties.  If FileSizeHigh is not zero, you know you have a big file
+         and that you'll have to do the 64-bit math yourself.
+       + Resetting would not always do a "full" reset.  The system will cache
+         some kinds of information, and you have to manually invalidate that
+         cache.  The most obvious manifestation of this problem was with a
+         CD-ROM drive.  Resetting would update the item's image, but would not
+         update it's text.
+       + Changing a CD would not update the display.
+       + Tree and list view item context menus now show and handle the Rename
+         context menu item. 
+0.97   + Delphi 5 compatibility.
+       + Renamed to include the 'dfs' prefix in the component name.
+       + The DFS_STV_FASTMODE and DFS_SLV_FASTMODE defines were broken (code
+         wouldn't compile).  Thanks to Felipe Rocha Machado for catching this.
+       + Sort column/direction of list view wasn't preserved when directory was
+         changed.
+       + Added ChangeToParent methods in tree, list and combo to move up one
+         level, i.e. "cd .."
+       + Added Known Issue item for C++Builder 3 users.  See above.
+       + Changing FileMask property of listview at run-time would not refresh
+         the list.  Fixed.  Thanks to Tamas Demjen for this.
+       + DFS_SLV_FASTMODE conditional define has been removed.
+       + Setting the tree view Selection property to a UNC path wouldn't work
+         correctly (i.e. something like \\someserver\somepath\someotherpath).
+         Lennert Ploeger was kind enough to figure out what was going on and
+         fix it.
+       + FileMask in the tree view was totally broken.  Lennert also help on
+         this one.
+       + I think I finally got rid of that pesky removable drive spinning when
+         it's parent is selected once and for all.
+       + Tamas Demjen sent me code to make the combobox respond better to font
+         changes.
+       + Nasty problem fixed when something caused the combobox to be recreated.
+         Thanks to Joachim Jo Samstag for his help on this.
+       + Under Delphi 2, 3, C++Builder 1, and 3 the Color property would not be
+         honored by the tree or list because of a VCL bug.  This was fixed in
+         version 4 (of both).  I've added code sent to me by Chris Wallace to
+         work around it in prior versions.  Many thanks to him.
+0.96   + Moved a lot of PItemIDList helper functions into a seperate unit named
+         PidlHelp.  This is mostly an internal thing, and shouldn't effect
+         component users.
+       + Marked public Reset methods as virtual for you folks who want to write
+         descendants.
+       + Now includes a TSystemComboBox written by Andrew Barnes.  Andrew was
+         kind enough to share this with the rest of us and give me permission
+         to include it in this package.  Huge thanks go to him.  Read the
+         comments at the top of SystemComboBox.pas for full information.
+         Also, this is just the first crack at the combo.  There are bound to
+         be problems, so please report them and provide as much info as you can
+         so I can duplicate them.  Some are already known, see the Known Issues
+         section.
+       + Since Andrew has provided us with the last missing piece (the combo),
+         I've renamed this thing the "System Control Pack".  SystemTreeView was
+         becoming ever more inadequate as a name.
+       + Because the SystemTreeView.pas file was growing ever more out of
+         control (144k in the last version), and because of some unit reference
+         issues, I decided to break up everything into smaller, more manageable
+         units.  SystemControlPack.pas now defines base virtual classes for all
+         the controls that define and implement how they interact with each
+         other, but implement none of the shell functionality.  Each control is
+         implemented in its own seperate unit descending from these base
+         classes.  Because of all the unit additions/changes/deletions, users of
+         previous versions should review how the component is installed.  Here
+         is the status of all the unit files in the package now:
+           SystemControlPack     -- New
+           SystemTreeView        -- Heavily modified
+           SystemListView        -- New
+           SystemComboBox        -- New
+           SystemViewReg         -- Deleted (see next)
+           SystemControlPackReg  -- New (renamed SystemViewReg unit)
+           PidlHelp              -- New
+           SystemView.inc        -- Deleted (see next)
+           SystemControlPack.inc -- New (renamed SystemView.inc and modified)
+         Delphi 3+ and BCB 3 users, update your packages accordingly.
+       + Because all of the major changes being made, I updated the $DEFINE
+         names to more accurately reflect what they effect.  See the
+         "Conditional Defines" section above for the new names.
+       + The $IFDEFs that checked to see if COM objects needed to be manually
+         reference counted used DFS_COMPILER_2.  This was technically correct
+         as it only needs to be done in Delphi 2 and C++Builder 1, but I've
+         changed it to use {$IFNDEF DFS_NO_COM_CLEANUP} to more accurately
+         show what is going on there.
+       + TSystemListView is not as tightly integrated with TSystemTreeView as
+         in previous versions.  This a first step towards making it work
+         completely on its own.  However, it is just a first step.  It needs
+         further testing, and some enhancements I'm sure.  Please send feedback
+         if you fool with this issue at all.
+       + The new stuff introduced a new bug in the list view, see Known Issues.
+0.95   + FileMask property only worked if the system were set up to display
+         file extensions (in Explorer, View | Folder Options | View tab | "Hide
+         file extensions for known file types" checkbox was unchecked).  This
+         has been fixed, and FileMask now works properly regardless of this
+         setting. Note that the setting still effects how the file is displayed
+         (extension shown or not).
+       + File sizes in the list view weren't "commaized".  That is, "4305 KB"
+         was displayed instead of "4,305KB".
+       + Large file sizes are now handled properly.  In D4, the Int64 type is
+         used.  All others use the Comp type since Int64 isn't available.
+       + Updated William Miller's DFSExplorer demo project.  See the
+         DFSExplorerReadMe.Txt file contained in the DFSExplorer.zip file for
+         his release notes.
+0.94   + Even though you could move through a removeable drive without a disk
+         in the tree with the ReadDelay property, it would still "spin up" when
+         you hit.  It just wouldn't generate an error message.  This has been
+         fixed so that it doesn't "spin up" at all unless you've stopped on it
+         long enough for it to populate (ReadDelay).
+       + Rewrote the TSystemListView.AddNode to make it a bit more efficient and
+         less messy.
+       + I was having sporadic problems with the images not being transparent on
+         my system.  I never could determine if it was my code, or some other
+         app that was causing it.  I've added a little more code to the image
+         list stuff, and the problem doesn't seem to be occuring now, but as
+         I said it was sporadic to begin with.
+       + The controls did not handle system color changes well.  This appears to
+         be a bug I inherited from the VCL.  The window background would change
+         to the correct color, but the background around the text would not.
+         I've worked around the problem.
+       + I wasn't calling inherited in my WM_TIMER handler.  This broke the
+         automatic editing of tree nodes when user clicked twice in a node.
+       + If the tree is reset, it will now remember the selected node.  If the
+         listview is reset, it will remember the focused item.
+       + ReadDelay is a little smarter now.  It won't delay at startup since
+         that's pretty silly.  It also won't delay on a manually refresh (a
+         call to the Reset method), since you really wouldn't want it to delay
+         there either.
+       + Added known issue about using the Color property (see above).
+       + Added DFSExplorer demo project.  A nicer version of the SimpleExplorer
+         demo written by William Miller.
+0.93   + Added a new demo project, SimpleExplorer.  It's your basic Explorer
+         clone, but on a light scale.  No toolbar, no Favorites menu, only basic
+         menu item commands.  Just to illustrate that it doesn't take much code
+         to get basic Explorer functionality with the components.  One note: I
+         used a TSplitter in it, so Delphi 2 is going to complain about that
+         since it didn't come with Delphi until v3.  Just go along with what
+         Delphi wants to do when you open the project in D2, and it should
+         compile and run fine, sans splitter of course.
+       + Version property now marked as not stored.  Doesn't need to be, and
+         only increases DFM size.  Should have always been that way.
+       + Cut and paste of the treeview still had problems in the IDE.  I
+         _really_ fixed it this time.  Promise.  :)
+       + TSystemTreeView.ResetTreeView renamed to Reset, and
+         TSystemListView.Reload renamed to Reset for consitency.
+       + Added TSystemTreeView.NodeData and TSystemListView.ItemData public
+         read-only properties.  See the new SimpleExplorer demo app to see how
+         these can be useful.
+       + DeleteNode and DeleteItem only worked for files, and they did not do it
+         via the system, i.e. it didn't honor the system settings for using (or
+         not using) the recycle bin.
+       + File sizes were still being reported as not working in some situations.
+         I'm trying yet a another new way of getting the file sizes.  It seems
+         to work for me, even solving a long standing issue of not being able
+         to get file sizes of open files.  But, if it causes you problems, you
+         can add the DFS_STV_OLDFILESIZE define and it will use the v0.91 file
+         size code.
+       + Added ReadDelay property to the treeview.  This makes it behave much
+         more like Explorer.  Set this to the amount of time in milliseconds you
+         want the tree to delay before populating the listview.  It defaults to
+         500ms, mostly because that seems the closest to Explorer's behavior.
+         You can probably set it lower and get results that are as good and
+         make it more responsive to the user.  The main place where this is
+         useful is when you are browsing through the tree and you want to go
+         through a drive that doesn't have a disk in it (floppy, CD, ZIP, etc).
+         Before, you'd always get the not accessible error or a long wait if
+         there was a disk in a slow access drive.  Now, it blows right on past
+         it if you move on before ReadDelay milliseconds.
+       + Added TSystemListView.GetSelectedPIDLs function.  See SimpleExplorer
+         project for how it can be useful.
+0.92   + On some network drives, the file size of files in the list view could
+         be reported incorrectly.  Thanks to Rob Watt for finding and providing
+         a fix for this.
+       + List view's ShowFolders property didn't work quite completely enough.
+         It would still show things like drives, which are technically folders.
+         If ShowFolders is false, it should only display files, as it does now.
+       + File changes were not being monitored correctly.  Things like files
+         being added in the current directory would not refresh the display.
+         Fixed.
+       + Don F. Ridgway sent me code to do that attributes column of the list
+         view.  MANY thanks to him for taking care of that To-Do list item.
+0.91   + Added OnPopulated event to both tree and list.  They fire after all
+         items have been added to them.
+       + Real file masking!  I've removed the SimpleMask property (it only let
+         you mask based on extensions) and replaced it with a FileMask property.
+         The tree also has this property, and uses it to mask files when
+         ShowFiles is set to true.  Use it much the same as you would any file
+         mask: '*' is 0 or more of any character, '?' is any one character, ';'
+         is used to seperate individual masks.  So, if you want all executables,
+         you could do something like '*.exe;*.com;*.bat;*.lnk'.  You can get
+         more fancy if you need to, as well, like '*4*.com' will show all files
+         with a '4' in them that end with a '.com' extension.  Basically, it
+         should work just the same as a mask in FindFirst/FindNext (although
+         those aren't used).
+       + Fixed known issue of delete/cut/paste of TSystemTreeView in the IDE.
+         It absolutely hated to be deleted when the Selection (or Directory,
+         they're the same) property was set to something other than blank.  Now
+         works fine.
+       + See updated information on the last item in the Working Notes section.
+0.90   + Stupid VCL doesn't update the Item.StateIndex property when the user
+         clicks on it to check/uncheck it.  Only updates it when you change
+         the value in code.  How worthless... Anyway, that made the ItemChecked
+         property pretty much useless as well.  I've fixed it.
+       + TSystemListView.GetFullPath screwed up drives.  It would return "C:\\"
+         instead of "C:\".  Thanks to Ladislav Dolezel for finding and fixing.
+       + Cleaned up the Known Issues list a bit.  A bunch of fixed stuff was
+         still listed.
+0.89   + Using several root folder types would make it difficult to work with
+         assigning a value to Selection property in tree.  It now attempts to
+         convert new Selection values to their relative equivalents
+         automatically to simplify this.
+       + Context menu now supports multiple items.  That is, if multiple items
+         are selected in a listview and the default context menu is requested
+         (i.e. the user right-clicks), the context menu is valid for all
+         selected items, not just the first selected.
+       + New public method DisplaySelectedContextMenu for listview.  Same as
+         DisplayContextMenu, except it shows menu for all selected items instead
+         of a specific TListItem.
+0.88   + Design-time value of tree's Selection property was not always honored
+         at run-time.
+       + Columns property should not have been published in the listview.  It is
+         now a public proeprty.  If you need to add your own columns, you do so
+         by setting ColumnType to ctUser and writing an OnCreateColumns event
+         handler that adds the columns at run-time.
+       + Added new public method DefaultDblClickAction to listview.  This can
+         be useful if you want to handle the OnDblClick in some situations, but
+         want normal handling in other situations.
+       + SimpleMask didn't work for registered file types if extensions were
+         hidden.  That is, if you set the "Hide file extensions for known file
+         types" option in Explorer, files of known types would always fail to
+         match the mask.
+       + Using listview's SimpleMask under Delphi 2 would cause AVs because of
+         an incorrect Release call.
+       + SimpleMask would hide files and folders that did not match instead of
+         just files.
+       + Listview didn't display the date/time for folders.
+       + Inplace renaming of listview items now renames the item properly, i.e.
+         if the listview is showing "Autoexec.bat" and you edit it, the file
+         will be renamed.
+       + Added two new public functions to listview, RenameItem and DeleteItem.
+       + Added Checkboxes published property and ItemChecked public property to
+         treeview.  These require the updated COMCTL32.DLL be on the system.  If
+         you don't know about the updated COMCTL32.DLL issue, get my
+         TExtListView component and read the ELV.txt file, especially the
+         "Redistributing COMCTL32.DLL" section.
+0.87a  + Updated ItemProp.pas unit.  This fixes a known issue with
+         cut/copy/paste context menu items not working on all installations.
+         No code in SystemTreeView.pas has changed.
+0.87   + The fix introduced in v0.85 broke TSystemTreeView if there was no
+         TSystemListView attached to it.  Stupid programmer...
+       + Removable drives would still get hit when being displayed in a
+         TSystemListView.  This was very annoying when those drives were empty.
+       + Added Data property to TFolderItemData class.  The reasoning is that
+         the components use the TTreeNode.Data and TListItem.Data properties,
+         so they aren't available to the component user any more.  Now, you can
+         have the equivalent by doing something like this:
+           TFolderItemData(Node.Data).Data := mydata;
+       + Demo program sometimes blew up on NT.
+0.86   + Added SystemView.inc file.  This file contains all the conditional
+         defines used by the unit.  There are two new defines in this file that
+         you may be interested in:  DFS_STV_SYSTREEVIEW and DFS_STV_SYSLISTVIEW.
+         See the Conditional Defines section above for a complete description.
+       + DFS_STV_USE_ENHLISTVIEW and DFS_STV_USE_EXTLISTVIEW conditionals added.
+         These are not enabled by default. See the Conditional Defines section
+         above for a complete description.  WARNING:  This is just a simple
+         implemenation currently, and there are likely to be problems.  Only use
+         these if you want to help me work out the bugs in it.
+0.85   + Resetting of a treeview that had a linked listview could cause nasty
+         problems because the listview kept a pointer that wasn't valid any
+         longer.
+0.84   + Updated to publish the new D3 and D4 properties such as RowSelect,
+         RightClickSelect, Anchors, etc.  Note, this stuff only shows up in the
+         appropriate version of Delphi.  For example, only D4's list/tree view
+         has an Anchors property, so TSystemTree/ListView only has it if
+         compiled under D4.
+       + Renaming a tree node did not update some internal data, and doing
+         things like trying to expand the renamed directory would complain about
+         the old name not existing.
+       + Deleting nodes in the tree could cause the automatic refresh stuff to
+         get confused and cause AVs when the component was destroyed.
+       + Setting ShowFiles to TRUE in the tree would cause it to try to watch
+         for changes in a directory with the name of the file selected instead
+         of the directory that the file was in.
+       + Removed the FShellMalloc._Release call in the finalization section for
+         D3 and higher.  It was there to begin with because there appears to be
+         a compiler bug with COM objects whose references are gotten in an
+         initialization section.  The compiler is supposed to automatically
+         insert a release call when the reference "goes out of scope", but
+         Delphi doesn't do this for stuff in the init section.  I was
+         compensating by inserting the call manually, but it turns out that if
+         you do this, you'll then get two calls to release, yours and the
+         missing automatic call that Delphi was supposed to be inserting anyway.
+         So, I figure it is safer to have the ref count of the COM object to be
+         too high rather than too low.  Go too low, and you could conceivably
+         end up freeing the shell's IMalloc object and that would be a TRULY
+         bad thing.  Thanks to Grahame Marsh for the spelunking he did on this.
+0.83   + The 'KB' abbreviation was hard-coded, it is now a resource string.
+       + Folders would show '0 kb' in fast mode instead of being blank like they
+         are in non-fast mode.
+       + Fixed range check error when sorting by column click under Delphi 4.
+       + AddNewNode method didn't like adding to root directory nodes.
+       + Floppy drive is no longer hit when expanding a tree node that contains
+         it.  MANY thanks to Jacques Bordas <farandir@club-internet.fr> for
+         fixing this EXTREMELY annoying bug.
+0.82   + Updated for Delphi 4 compatibility.
+0.81   + NT 4 has more than 8 bytes stored in in the registry key used for the
+         column sizes.  This caused problems, but it really shouldn't have.
+         At any rate, I've modified the code to account for the size being
+         unknown.
+       + Almer. S. Tigelaar <almer-t@usa.net> emailed me a fix for the "never
+         ending flicker" problem that some people have reported.  I could never
+         duplicate the problem, so I can only tell you that he said it fixed it
+         for him.  If you still have the problem, please let me know.
+0.80   + Unit now uses DFS.INC file for my commone defines.
+       + Moved all this crap out of source file to this text file.
+       + Changed context menu handling entirely.  Components now use my ItemProp
+         unit (included) that handles it all.  I did this because I have the
+         Send To menu problem solved in ItemProp, and redoing it here seemed
+         pointless.  So, the Send To menu bug (it being empty) is now fixed.
+       + Added PopupMenuMethod property to both components.  pmmNone means use
+         no popup menus at all, pmmUser means use only menu in PopupMenu
+         property, pmmContext means use only system context menu, pmmContextUser
+         means use system context menu if it can and PopupMenu if it can't.
+         Items like the Desktop node and listviews with nothing selected are
+         places where the context menu would not be used and the PopupMenu would
+         kick in.
+       + I've added two new defines to the top of the unit, DFS_STV_FASTMODE and
+         DFS_SLV_FASTMODE.  See Conditional Defines section above.
+       + Forgot to override the tree's Notification method.  This would cause
+         violations if a linked list view is deleted before the tree view.  Many
+         thanks to Simon Armstrong <simes@clara.net> for catching this one.
+       + File time in TSystemListView could be incorrect in some time zones.
+         Thanks to Frank Kroeger <FKroeger@tkc.de> for providing a fix.
+       + Added Reload method to TSystemListView.  You can guess what it's for.
+       + Shortcut (.LNK) files in the Desktop folder no longer show their .LNK
+         extension.
+       + Wouldn't compile with DFS_STV_FILECHANGES undefined.  Thanks to Elmar
+         Klaus <herr.schwupp@cww.de> for fixing this.
+       + Added Known Issuses section above.  Please read it.
+       + Changing MultiSelect property of TSystemListView at run-time would
+         clear the contents of the list view.  Actually, anything that recreated
+         the window would do this.  Now properly reloads after window is
+         recreated. May also have been causing some AVs that people reported
+         when changing MutliSelect value, but I wasn't able to verify this.
+       + TSystemTreeView has a new Directory property.  It is identical in
+         every way to the Selection property.  :)
+       + Added two read-only properties to TSystemListView: Filename and
+         FullFilename.  Both are array properties that use a TListItem as the
+         index.  Ex:
+             ShowMessage(MyList.FullFilename[MyList.Selected]);
+       + Got rid of the hard-coded column captions for TSystemListView.  They
+         are declared as resourcestrings for D3 and just constants for D2 in the
+         interface section.
+       + Double clicking on an item in TSystemListView now takes the item's
+         default action (the one in bold on it's context menu).  However, if you
+         have an event handler for OnDblClick, this will not happen.
+       + Share and link image overlays weren't correct on all machines.  Fixed
+         by Benedykt Kubica <b.kubica@computer.org>.  Many thanks.
+       + TSystemTreeView and TSystemListView Items property has been changed to
+         public visibility and read-only.  This stuff should only be read from,
+         never written to from outside the component.
+       + Dropping a TSystemListView on a form with a TSystemTreeView on it will
+         automatically hook it up to the ListView property of the the tree.
+       + TSystemListView would always show the contents of the desktop when the
+         treeview's root node was selected, even if the root node wasn't the
+         desktop, i.e. RootFolder was rfCustom and CustomDir set to c:\.
+       + Setting MultiSelect property of list view at design-time in forms that
+         were not auto-created would cause AV's when the form was created and
+         shown at runtime.
+       + Found and fixed a problem with the file/dir thread watcher. Not sure
+         what problems it may have been causing as it would have been very
+         sporadic, but creating directories may now be more reliable.
+       + Sorting is better now.  TSystemListView sorting was broken sometimes,
+         and it wasn't completely right anyway.  Now sorts folders first and
+         items after.  Should sort exactly like explorer now.
+       + Now compatible with C++Builder 1 & 3.
+       + Added AutoScroll property.  This feature was entirely written and
+         contributed by Aristide Torrelli <a.torrelli@tin.it>.  I have only
+         adapted it for use in TSystemListView.  Many thanks to him.
+       + Palette icon for list view provided by Almer. S. Tigelaar
+         <almer-t@usa.net>.
+       + SimpleMask property added to TSystemListView.  This feature was written
+         by Rafal Platek <creams@creamsoft.com> and slightly edited by me. To
+         only list files with specific extension(s), just assign the
+         extension(s) to this property.  For example:
+           MyList.SimpleMask := 'pas'; // show only .pas files.
+           MyList.SimpleMask := 'pas,dpr,dfm'; // show common Delphi source files
+           MyList.SimpleMask := ''; // No masking, show all.
+       + The following were done by Fabrice Fouquet (services@cfp47.inba.fr):
+         * Setting Section property of tree now makes sure it is also visible.
+         * Hourglass cursor during directory changes.
+         * Use registry info to size list view columns so they match Explorer's.
+         * Double-click in listview moves into sub-folder and updates treeview,
+           too.  I enhanced this one so that it would work with non-file
+           system folders, so if something there breaks, it's my bug not
+           Fabrice's.
+         * Column sorting for list view.
+0.70   + Turns out I was thick-skulled after all (see 0.65 notes). I was
+         allocating the memory with GetMem, and that of course does not
+         initialize the memory (i.e. make sure the pointer variables are set
+         to NIL).  So, I assigned something to the IShellFolder variable,
+         and Delphi 3 checks the existing value and tries to Release it if
+         it is not NIL.  Well, it's just trash initially, so off it goes
+         into the weeds...  I could go back to the dynamic allocation method
+         and use the Initialize function to clear it all, but the class is
+         better anyway.
+       + General clean-up.
+       + Fixed bug in RenameNode method.  It updated the relative PIDL, but
+         not the fully qualifed PIDL.  Thanks to Frank Kroeger
+         (FKroeger@tkc.de) for finding and fixing this.
+       + Shared and link overlay images now work for the tree and list. HUGE
+         thanks go to Peter Ruskin (PeterRuskin@classic.msn.com) and Lars
+         Randers (lranders@post2.tele.dk) who both for provided this code.
+       + Added ShowFolders property to TSystemListView.
+       + Files weren't shown in folders that had no subfolders (ShowFiles
+         property set to TRUE).
+       + Fixed problem that would cause bizarre access violations if you did
+         anything that caused the window to be recreated.  For example, if
+         you changed the BorderStyle property, you would get this because
+         the window handle has to be destroyed and recreated.  This caused
+         all the pointers to get freed, but then the pointer values were
+         restored when the window was recreated -- data is gone, just a load
+         of invalid pointers.
+       + Images were screwed up in Control Panel and Printers folder.
+       + Overriden Expand method never called inherited.  Broke OnExpanded
+         event.
+0.65   + Yes, it's true; I FINALLY got it working under Delphi 3.  I thought
+         I was just really thick skulled, but turns out that Delphi 3 freaks
+         out when you try to store COM object references in dynamically
+         allocated records.  I switched the record structure over to a class,
+         and all works just fine... Go figure.  Needed to be done anyway.
+         Now I need to flesh out the new class so it's more OOP-ish.
+0.60   + Well, it compiles under Delphi 3, but it sure doesn't work.  I will
+         get to when I can.  Sorry.
+       + Added TSystemListView.GetItemAttrs public method so you can get the
+         attrs of an item to do stuff like testing for if it is a folder:
+            if (SLV.GetItemAttrs(SLF.Selected) and SFGAO_FOLDER) <> 0 then
+               // It's a folder
+       + Added TSystemListView.GetFullPath public method to get an item with
+         it's complete path information.  This obviously doesn't apply for
+         things like printers and such.
+       + Sorting in the TSystemListView should now work.  Set SortType to
+         something other than stNone.
+0.50   + ShowRoot didn't work as it should (as TListView does).
+       + rfFileSystem roots wouldn't expand farther than the first level.
+       + Some serious problems with EAccessViolations after fiddling with
+         the component for a while (change RootFolder, etc).  I think I have
+         this all fixed up now.  AddRefs and Releases weren't quite right.
+       + Selection property is now read and WRITE.  That means you can do
+         something like MyTree.Selection := 'c:\windows\system'; and it will
+         select that node. Note that this only works with file/directory
+         stuff, there is no way to do something like MyTree.Selection :=
+         Control Panel; Also note that the assignment value is relative to
+         the root type.  So, if you want to select a directory when
+         RootFolder is rfDesktop or rfDrives, you pass the full pathname.
+         If RootFolder was rfPrograms and your programs directory was
+         'c:\win\start menu\programs' and you wanted to select
+         'c:\win\start menu\programs\some folder\subfolder', you would do:
+           MyTree.Selection := 'some folder\subfolder';
+         Many thanks to Raymond Chen for his help on walking a PIDL (similar
+         to walking a dog, but without the pooper-scooper).
+       + Added OnAddListItem and OnCreateColumns to the TSystemListView
+         component. OnCreateColumns is called when ColumnType is set to
+         ctUser.  The old columns are removed and then the event is fired.
+         The event is responsible for creating the columns it needs.
+         OnAddListItem is called every time an item is added to the listview.
+         It passes the new TListItem, which has the Caption property set to
+         the name of the new item.  You should set the ColumnType property
+         to ctUser and create the columns you need in the OnCreateColumns
+         event.  Then, in the OnAddListItem event, you would add the data
+         for these new columns by using the passed TListItem's SubItems.Add
+         method.
+       + Updated for compatibility with Delphi 3.
+0.40   + At this point, TSystemListView is just an experiment.  If you have
+         problems with it, I will try to help, but I will not devote much
+         time to it.  I'm mainly interested in the tree view.  Now, if you
+         have problem AND a fix, I'll be more than happy to hear about it.
+       + Somehow I ended up with two versions of v0.30.  I don't have any
+         idea how it happened, and I've given up trying to merge the two
+         versions and just gone back to the one with the most functionality.
+       + Got rid of the SHGetDataFromIDList call.  Only works correctly on
+         NT 4 with service pack 2, so it's not really a viable alternative
+         for this.
+       + Sorting revisited. Thanks to Detlef Meister
+         (Meister@rz.fhtw-berlin.de) for sending me some good code to start
+         with for this.  I think sorting is working very well now, but that
+         is of course only on my machines.  Please try it out, and especially
+         pay attention to see if it sorts in the same order as Explorer.  If
+         you find that sorting is causing terrible problems for some reason,
+         you can turn it off by undefining STV_DOSORTING below. If all goes
+         well with it, I'll add it to the list view next.
+       + Added read only Selection property.  Returns the path name of the
+         selected node (if it is a file system object).  Working on making
+         it read/write, but it's a pretty hairy problem.
+       + CustomDir didn't like UNC names (\\somecomputer\somedirectory).
+         Working a little better now, but still not right.
+       + Many people have asked how to just display drives, i.e. RootFolder
+         set to rfDrives but without the printers, control panels, etc.
+         There is no direct support for this at the API level
+         (SHGetSpecialFolderLocation), but I think I have found a way to do
+         it.  Try the new rfFileSystem root type. Let me know if you have
+         any problems with it.  It should have My Computer as the root node
+         and then any device that has physical storage capability as child
+         nodes.  If you are interested, search for SFGAO_FILESYSANCESTOR to
+         see what I'm doing.
+0.30   + New feature:  Set the value of CustomDir to a valid directory, and
+         then set RootFolder to rfCustom, and the tree will allow you to
+         browse from that directory as the root.  Also, if you don't want
+         the root to read something like 'c:\win\system', then use
+         CustomDirCaption to override it.
+       + Now using SHGetDataFromIDList, which is missing from SHLOBJ.PAS.
+         See step five in ShellFix.txt.
+       + If PopupMenu property is has a menu, it is displayed instead of the
+         context menu.
+       + TSystemListView now descends form TCustomListView as it should.
+       + Fixed bug.  I overrode the Change method of the tree, but forgot to
+         call inherited method. This broke the OnChangeEvent - never called.
+       + Fixed bug that caused serious problems for projects with one of
+         these saved on a form.  When you tried to reopen the form after it
+         was closed, it would cause many strange things to happen, usually
+         just a lockup.  See the Loaded and CreateWnd methods for the fix.
+         If you want detailed description, email me and I will explain it.
+       + New feature: ShowFiles property.  Allows the tree to display items
+         other than folders in it.  I guess ShowFiles isn't the best
+         description, since also includes things like printers in the
+         printers folder.  Anyone got a better name for it?
+       + TSystemListView object has some serious problems, so I've disabled
+         it in test app until I get time to work on it.  I strongly suggest
+         you stay away from it in this version, unless you want to help me
+         fix it.  To reenable it in the test app, take out the NOLISTVIEW
+         define at the top of TESTING.PAS.
+0.21   + DisplayContextMenu doesn't work for root tree objects.  Desktop
+         doesn't have one, and I fixed that, but don't know what's wrong
+         with the others.
+       + Moved all strings into resource file (ErrorMsgs.r32) except for the
+         debugging "mem leak" string.  Doesn't seem to like loading strings
+         in an exitproc (finalization section).
+       + Could never make up my mind about whether to go with message boxes
+         or exceptions, so I just added a public property that can be used
+         to set your preference.  I prefer message boxes since there is no
+         good way to catch the exceptions in an app, so that is the default.
+       + Added all the file system report info stuff for list view items
+         (size, type, date).  If anyone knows how to determine the type of
+         object you have given it's PIDL, I'd love to know it.  Right now,
+         if it's not a file system object, you just get it's name.
+0.20   + This unit requires complete boolean eval to be turned off.  I've
+         added the appropriate compiler switches to do this in case it is
+         turned on in your project.
+       + First crack at a TSystemListView component to compliment the tree
+         view. It is way far from being as functionally complete as the tree
+         view.  Mostly it's to see if it works for everyone at it's simplest
+         form.
+0.11   + Deleted the $I DEFINES.INC file in demo app.  Not needed any more.
+       + Added GetNodePath.  Returns full path given a TTreeNode.  Returns
+         '' if it is not a file system type node (i.e. control panel).
+       + If selected node were deleted from another app, it could get pretty
+         ugly. Fixed.
+       + Added palette resource icon for component.  Thanks to Basri Kanca
+         for it.
+       + Added three new functions, RenameNode, DeleteNode, AddNewNode.
+0.10:  + I Feel reasonably confident in the component now.  All core
+         functionality seems to be in place and working.
+       + Added ability to rename folders.  Thanks to Thomas AW Brown.
+       + Fixed problem that would occur if you installed the component in
+         Delphi (i.e. Component | Install).  By default, the Items property
+         is "stored", so all everything in it is written to the DFM file
+         that the component is on and that includes the Data property of
+         each of the tree nodes.  This a pointer to memory we allocate, so
+         having the pointer value stored wouldn't do a whole lot of good,
+         would it?  See the redeclaration of Items below.
+       + Added a new unit, FileChange, which provides a TThread descendant
+         that knows how to watch directories for changes in structure.  It
+         hasn't been well tested, so I have included it only inside $IFDEFs.
+         It should automatically cause the selected node to be updated if
+         another app makes changes to that directory's subdir structure.
+         For example, compile and run the demo.  Select a node that is a
+         directory somewhere on your hard drive.  Start explorer and select
+         that same node in it.  Add a new folder to the selected directory
+         in Explorer.  The demo app should automatically update the node to
+         reflect the change.  If you have problems with it, comment out the
+         $DEFINE FILECHANGES line below.
+0.03:  + Finally got the damn icon problem fixed.  The PIDL wrapper class
+         was hosing me up somehow.  Don't know what was wrong with it, but
+         its pointer would disappear for some reason.  Getting rid of it
+         cleared up the problem.  So much for OOP making my life easier.  :)
+       + Got ShowRoot working.  Thanks to John Cardinal for that.
+       + General code clean up.
+       + While Mr. Ritchey acknowledged the declaration errors in his
+         ShellObj unit, he has never answered my request to included a fixed
+         version of it with this control.  So, for now, I'm just going to
+         include directions on how to fix everything and not worry about.
+         See the SHELLFIX.TXT file.
+0.02:  + Updated to use ShlObj, available inthe Delphi 2.01 update.  See
+         NOTE above. Edit the DEFINES.INC file to control which namespace
+         import unit you want to use.  If $D201 is defined, you use
+         Borland's, otherwise Pat Ritchey's. Also made some more changes to
+         ShellObj to make it more compatible with Borland's ShlObj version.
+         If you use Borland's, context menus won't work. See the comments in
+         the DisplayContextMenu method for an explanation.
+       + Context menus (right click) are working, but need a good round of
+         testing.
+       + Added some stuff to the demo project to help with testing.
+       + Can now change RootFolder property during execution.  Would blow up
+         before if changed after initial assignment.
+         rfRecycleBin still blows up...  don't know why.  It doesn't like
+         the EnumObjects call in EnumerateFolders.
+       + A lot of the code got rewritten to make context menus, icons, etc.
+         work. A the Golden Rule of PIDLs is that the SH* functions take a
+         fully qualified path PIDL, and the IShellFolder interface methods
+         take a relative PIDL. I was using relative PIDLs everywhere.  The
+         result is that more things work now, but the code is probably even
+         less stable than before.  Bang on it.
+0.01:  + Cleaned up the mess in the USES clauses and the test project.
+0.00:  + Initial alpha release to limited audience.
+

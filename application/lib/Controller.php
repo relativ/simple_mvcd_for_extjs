@@ -1,5 +1,5 @@
 <?php 
-	class Controller extends Object implements IController{
+	class Controller extends Object_ implements IController{
 		
 		function __construct() {
 			parent::__construct();

@@ -1,0 +1,445 @@
+TdfsGradientForm v2.03
+
+Description:
+  A form that paints it's caption bar in a gradient pattern, like the new
+  Microsoft Office applications.  It starts with black and moves gradually
+  to the system defined color.
+
+
+Contact Information:
+  The lateset version will always be available on the web at:
+    http://www.delphifreestuff.com
+  If you have any questions, comments or suggestions, please use the Delphi
+  Free Stuff Support Forum at:
+    http://www.delphifreestuff.com/discus/
+  If, for some reason, you can not use the web-based support forum, you can
+  email me at bstowers@delphifreestuff.com.  However, the support forum will
+  always take precedence over direct email since it provides a resource that
+  others can use when they have a problem.  Every message posted to the forum
+  is emailed directly to this account, so emailing me directly will not get
+  your message to me any faster.  It will only make the message less important
+  for me to respond to since only one person (you) is benefiting from it
+  instead of everyone interested.  Having said all that, please do email me
+  directly if it is regarding something that isn't really support related,
+  i.e. just to say thanks (as novel as that idea is).
+
+
+Installation:
+  Delphi 1:
+    * This class is not compatible with Delphi 1.
+
+  Delphi 2, C++Builder 1:
+    * Simply place the files in the directory of your choosing.  There is no
+      component involved.
+
+  Delphi 3, 4, 5, C++Builder 3 & 4:
+    * Do one of the following:
+      + Create a new package by selecting File | New and choosing Package from
+        the New tab in the dialog.
+      + Open an existing package file.  I suggest you do this if you already 
+        have a package that you like to use for small, third party components.
+        I specifically have a package named "3rdParty.dpk" that I use for 
+        small components that come from other people.  Or, if you are using
+        several of my components, you might create a "DFS.dpk" package and 
+        use it for all of my DFS components.
+    * In the resulting package window, click the Add button.
+    * In the Add dialog, on the Add Unit tab, enter the full path name of the 
+      component's registration unit (the unit that ends with 'Reg.pas', i.e. 
+      'BrowseDrReg.pas') and click OK.
+    * You may want to add the other source files (*.pas) to the package as
+      well in the same manner as you did the registration unit.  While this is
+      not required, not doing it will cause compiler warnings when the package
+      is compiled.  The component will function fine either way, but I 
+      personally find the warnings very irritating and am not happy until 
+      every compiler warning and hint is gone.
+    * If this package is new, or it has never been installed, click the 
+      Install button in the package window.  If this package is already 
+      installed in Delphi, click the Compile button.
+      Note that this will NOT add any items to your component palette.  
+      TdfsGradientForm is not a component, but a TForm descendant class.  So, 
+      instead of a component palette icon, you will instead have a new "DFS" 
+      tab added to the Object Repository (File | New).  If you prefer a tab
+      name other than "DFS", you can edit the sGradFormObjRepositoryPage and
+      sGradFormProjObjRepositoryPage constants in DSAMsgReg.pas and recompile
+      the package.  Note that you can use the name of an existing tab 
+      ("Forms" for example) to have the items added there.
+
+  C++Builder 5 and up:
+    * Perform the "Delphi 3 and up, C++Builder 3 and up" steps above, except
+      for the last step (Compile or Install).
+    * Select the package the component has been added to, and choose 
+      Project | Edit Option Source to open the package options in the editor.
+    * In the entry for PFLAGS, add the "-LUvcl50" option.  For example:
+        <PFLAGS value="-$YD -$W -$O -v -JPHNE -M -LUvcl50"/>
+    * Perform the final step from above, Compile or Install.
+    * For Borland's official word on this situation, open the C++Builder help
+      file and search the index for "dsgnintf.dcu" and see the "Compiling
+      packages with DsgnIntf" section.
+
+  Delphi 6 and up:
+    * Perform the "Delphi 3, 4, 5, C++Builder 3 & 4" steps above, except
+      for the last step (Compile or Install).
+    * Add the DesignIDE package to the Requires list of the package into which
+      the component is being installed.
+    * Perform the final step from above, Compile or Install.
+    * This is necessary because of changes to the design-time support units
+      introduced in Delphi 6.  For complete information, see the Del6New.hlp
+      file in your Delphi 6 Help directory.  In the index, search for
+      "upgrade issues" and in the resulting list of topics, select the
+      "DsgnIntf renamed and related changes" topic.
+
+  Help File:
+    * Copy GradForm.Hlp to your Delphi\Help (or Builder\Help) directory.
+    * Edit the Delphi3.cnt (or Delphi4.cnt or bcb3.cnt) file and add the following
+      line to the Index section:
+        :Index TdfsGradientForm Reference=GradForm.hlp
+
+
+Design-Time Access to TdfsGradientForm Properties:
+  NOTE:  This information applies only to Delphi 3 and above, and C++Builder 3
+         and above.  Previous versions of Delphi and C++Builder do NOT support
+         design-time access of TForm descendants.  Sorry.  You can still use
+         this class with those prior versions, you just won't have access to
+         the new properties at design-time.
+  * Create a new application project.
+  * Select File | New and choose the "DFS" tab in the Object Repository window.
+  * Select the "Gradient Form" item and click the OK button.
+  * You should now have a new TdfsGradientForm type form added to the project, and
+    when you select it all new properties should be visible in the IDE.
+
+
+Adding Help to Delphi 2:
+  * Copy GradForm.Hlp and GradForm.Kwf to your Delphi\Help directory.
+  * Use the HelpInst tool included with Delphi to install the GradForm.Kwf
+    into Delphi.
+
+
+Delphi 2 and C++Builder 1 Notes:
+  * The best way to use this form is to add it to your Object Repository.
+    Simply open this unit in Delphi (or C++Builder 1, right click on the form
+    and select Add To Repository.  Then, when you want a TdfsGradientForm, you
+    just select it from the repository (File | New) and use the "Inherit"
+    option so you don't have to see all this code in your form.
+
+    Delphi 2: If you have existing forms that you want converted to gradient
+    forms in Delphi, simply add "GradForm" to your "Uses" clause, and change
+    your form's ancestor to TdfsGradientForm.  An example:
+       Change:
+          TMyForm = class(TForm)
+       To:
+          TMyForm = class(TdfsGradientForm)
+
+    C++Builder 1: To convert existing forms, add the GradForm.pas file to the
+      project (using Project Manager), then open the form's header file and add:
+
+       #include "gradform.hpp"
+
+    above the form class declaration.  Next, change the form's class declaraion:
+      Change:
+        class TForm1 : public TForm
+      To:
+        class TForm1 : public TdfsGradientForm
+
+    And finally, change the form's constructor in the source (.cpp) file:
+      Change:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TForm(Owner)
+        {
+      To:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TdfsGradientForm(Owner)
+        {
+
+
+Developer's Notes:
+  * Special thanks go to Michiel Ouwehand of Epic MegaGames for the
+    clipping region tips (See the WMNCPaint method) and for pointing out
+    the DrawFrameControl API function (see the PaintCaptionButtons method).
+  * Be aware that this form has had some problems in MDI applications.  I
+    think I have worked them out, but I suggest you test everything very
+    thoroughly.  I used a small hack to do it (see GradClientWndProc).
+  * I've used strictly GDI calls for the painting in this component.  No
+    TCanvas, TBitmap, TBrush, etc.  This is because that although they are
+    extremely nice to use, they are not nearly as efficient.  That's not a
+    slam on them.  They have to be able to know how to do a lot of things,
+    and that requires overhead.  I have a very specific set of things to do
+    here, and I am *very* interested in getting it to do it as fast as
+    possible, so I'm willing to sacrifice the convenience of the classes
+    for the speed of the API.  One day I'll sit down and do a speed
+    comparison to see if I really gained that much this way.  If you don't
+    understand the GDI calls, leave them alone, or use them to experiment
+    with in learning how to use them.
+  * This form will only work in the 32-bit world.  I have used very few calls
+    that would prevent it from working on Delphi 1, so it will be fairly simple
+    to convert to Delphi 1, but there is a lot of stuff that would have to
+    be changed to make it look right.  For instance, I paint an icon in the
+    left corner for the system menu.  This is a Win95 style only.  Also, I
+    allow for BorderStyles like bsToolWindow that don't exist in Delphi 1.
+    Converting to Delphi 1 could be done, and shouldn't be all that
+    difficult since all the painting routines should work fine except for
+    the icon painting, and you don't need that for Win 3.1x anyway.
+    I just don't do any Delphi 1 development any more, so I leave it to one
+    of you to implement.  If you do, I would appreciate it if you could do
+    it using $IFDEF DFS_WIN32, and send me the changes so others can use it as
+    well.
+
+
+Known Issues:
+  * Help file has not been updated from the 1.56 version, so it does not include
+    the new stuff.  I'm switching help authoring tools and just don't have the
+    time at the moment to convert over the existing stuff into the new tool.
+    I will get it in a future version.
+
+
+Revision History:
+  2.03:  + Updated for Delphi 6 compatibility.  See updated install directions
+           above.
+  2.02:  + Updated for C++Builder 5 compatibility.
+  2.01:  + Setting the BorderStyle property to bsNone would cause division by
+           zero exceptions.  I'm not sure why you would do this since it results
+           in a form without a caption, but it's fixed anyway.
+  2.00:  + Miklós Kovács was kind enough to fix the known issue of the help
+           button not wanting to stay depressed.
+         + Fixed problem of restore caption button only being pained on
+           minimized MDI child, not on any style child.
+         + Some people still got a range check in the FillRectGradient function.
+           Should definitely be fixed now.
+         + Added some new properties: Logo, InactiveLogo, LogoAlign, and
+           LogoLayered.  These are based on code provided by Joe White.  Many
+           thanks to him for sharing.  These related properties are for
+           displaying an image on the caption.  LogoLayered is probably the only
+           one that needs an explanation:  If true, the caption text is drawn
+           over the logo, if false it is moved over next to it.
+  1.95:  + It's *really* D5 compatible now.  Small change between the D5 eval 
+           version and the real, shipping D5 version broke it.
+  1.94:  + Classname changed.
+           D5 compatibility.
+  1.93:  + It was possible to get range check errors under D4 in the NC
+           painting (a very bad place for it to happen) because the underlying
+           HRGN type was changed in the RTL to an unsigned type and I wasn't
+           typecasting a WPARAM value.  Fixed.
+  1.92:  + Updated for C++Builder 4 compatibility.
+  1.91:  + Cleaned up most of the {$IFDEF DFS_CPPB} stuff to make the code
+           easier to read/maintain.  I always do the typecast now, which isn't
+           needed if compiling under Delphi, but won't hurt either (the cast
+           doesn't generate any extra compiled code).
+         + Fixed some problems in the banded gradient painting code that
+           effected only those of you writing descendant classes.  Many thanks
+           to Joe White for finding and fixing these.
+  1.90:  + Added UseDithering property.  If true, and in a high color mode,
+           a dithering mask will be used to draw the gradient.  This method
+           is better than the old because it doesn't have the "banding" effect.
+           The code this is based on was sent to me by Tamas Demjen, many thanks
+           to him.  If you want to read a good article discussing this, see his
+           web site.  The article is at
+           http://members.xoom.com/demjen/builder/gradient.html.
+  1.83:  + Using the OnCaptionPaint event caused the caption font handle to
+           be deleted, resulting in the system font getting used.  Thanks to
+           Joe White for finding and fixing this.
+         + Minimized MDI child forms had their restore caption button drawn as
+           minimize buttons.  Thanks to Huub Schaeks for finding and fixing
+           this.
+         + There was some annoying flicker on form creation when the form
+           inheritance was being used.  Thanks to Huub Schaeks again for finding
+           and fixing this one, too.
+  1.82:  + Stupid programmer (me) thought BorderWidth was in all versions of
+           Delphi & Builder.  It's not; it's D4 only.  v1.81 would only compile
+           under D4.  Fixed.
+  1.81:  + If BorderWidth had a value other than zero, you would get an
+           unpainted area around the form.
+  1.80:  + Added CaptionFont and UseSystemCaptionFont property.  If
+           UseSystemCaptionFont is true, CaptionFont is ignored.  Otherwise,
+           CaptionFont is used for the text in the caption bar.  The color of
+           the CaptionFont property is ignored, and the CaptionTextColor and
+           InactiveCaptionTextColor properties are still used for this as always.
+           Also, the Size property of CaptionFont has no effect, either.  This
+           is because you really wouldn't want to try to account for how big the
+           user's caption bar is and adjust your font size for that in code.
+           Instead, I just built it into the class. Of course, if you pick a
+           font that doesn't support a lot of sizes (i.e. non-TTF), you could
+           still end up with a font that doesn't fit well.
+         + Gradient looked bad on 16-color systems.  There's no really good way
+           of doing a gradient with the basic 16-colors available on these
+           systems, so by default the gradient won't be painted now on these
+           systems.  If you find some reason to go ahead and do it, you can
+           override this behavior by using the new public property Paint16Color.
+         + OnCreate event was being called twice (once before constructor, once
+           after) in C++Builder apps.  Fixed so that it now behaves the same
+           as a regular TForm (i.e. OnCreate called after constructor).
+         + UseWin98Gradient property has been extended to also mean "use NT 5
+           gradient".  I should probably rename it, but that would break
+           existing DFM files, and the name would probably be really silly, too.
+           Maybe I'll rename it to "UseSystemGradient" in the next major version.
+  1.72:  + If the system menu Close item was disabled (via CS_NOCLOSE class
+           window style, for example) the close caption button was not drawn
+           in the disabled state.
+  1.71:  + Fixed bug that would cause OnCreate to be called twice in Delphi 4
+           if the OldCreateOrder property were set to FALSE.  Thanks to Pepe
+           Lazo <info@servosis.com> for finding and fixing this.
+  1.70:  + Fixed "unresolved external" linker errors in C++Builder.  If you are
+           interested in the details, search for "DFS_HDC" in the source.
+         + Added real IDE experts (see GradFormReg.pas) for proper design-time
+           support of the new properties.  This removes all the old fooling
+           around with the object repository you had to do to install this thing
+           in previous versions.  If you have installed a previous version of
+           this, you can, and should, now delete that old entry from the object
+           repository.  You now use the items on the DFS tab of the object
+           repository to create new TdfsGradientForms.  Please read the
+           installation section above for complete details of what old files
+           should be removed/deleted.
+         + Delphi 4 compatibility.
+  1.62:  + Cut and paste error in the SetGradientInactiveStopColor method.  Did
+           not properly track whether the system default inactive color was
+           being used or not.  Thanks to Pepe Lazo for pointing the erroneous
+           code out to me and providing a fix.
+         + System icon now always paints in design-time.  Thanks again to Pepe
+           Lazo for catching and fixing.
+         + Caption font was created too soon and in the wrong place.
+           BorderStyle values of bsToolWindow and bsSizeToolWin would use the
+           big (normal) font.  Thanks yet again to Pepe Lazo for catching this.
+         + Moved the following methods from private to protected visibility and
+           made them virtual:  DrawCaption, GetCaptionRect DrawCaption,
+           PaintMenuIcon, FillRectSolid, FillRectGradient, PaintCaptionText,
+           PaintCaptionButtons.  More friendly to those who want to descend from
+           the class.
+  1.61:  + Fixed problem with changing a form's Caption property in the
+           OnShow, OnActivate and/or OnDeactivate events.  Caused some nasty
+           screen painting problems.
+  1.60:  + Known issues section updated, don't forget to check it.
+         + Added Version property.
+         + Added UseWin98Gradient property.  Setting to TRUE will effectively
+           disable all TdfsGradientForm code if the app is being run on a Windows
+           98 system.  This is to let Win98 provide the gradient while still
+           allowing your app to do the gradient on Win95/NT systems.  It
+           *should* catch NT 5.0 systems as well, but I've not tested that so
+           I can't swear to it.
+           NOTE:  Because I have to recreate the window handle when you change
+           the value of this property, the form is going to disappear from the
+           IDE.  I can't find a way to force the IDE to redisplay the form, so
+           you will have to manually press F12 to redisplay it after changing
+           the property value.  However, this does not happen at run-time so you
+           don't need to do anything special in code.
+         + Changing the system caption color would only cause non-MDI child
+           forms to updated their colors.  Fixed.
+         + Changing the caption of an MDI child TdfsGradientForm in its OnActivate
+           and/or OnDeactivate method would cause very nasty painting problems
+           when it overlapped other MDI children.  Fixed.
+         + Added three new related properties: GradientInactiveStartColor,
+           GradientInactiveStopColor, and InactiveCaptionTextColor.  As you
+           might guess (unless you've been bashing your head between two bricks
+           for more than an hour a day), they work exactly the same as
+           GradientStartColor, GradientStopColor and CaptionTextColor except
+           they apply when the window is inactive (not focused).
+  1.56:  + The gradient could become somewhat distorted if in high color mode
+           and the caption was wider (in pixels) than the GradientColors value.
+           It now uses the low color painting method in this case which is
+           slower, but does not have the distortion.  Thanks to Jim Burns
+           (jimburns@technologydynamics.com) for catching this.
+         + C++Builder 3.0 compatible.
+  1.55:  + I goofed on when the GradientStopColor was stored.  It ended up such
+           that you could not change the GradientStopColor at design time.
+         + Fixed problem that would cause the text that showed up in the task
+           switch window (Alt-Tab) to be incorrect if you changed the Caption
+           property from its design-time value.  An unexpected bonus from this
+           fix was that it cleared up the maximized MDI child flickering problem
+           as well.  :)
+         + Compatible with C++Builder 1.0.
+  1.54:  + Caption buttons had a few problems.  Min/max buttons weren't being
+           drawn disabled when they should, and help button didn't always show
+           up when it should.
+  1.53:  + Drawing minimize/maximize caption buttons when I shouldn't have been.
+         + Design-time drawing bug fixed.
+  1.52:  + Fix for WM_SYSCOLORCHANGE in last version wasn't exactly right.
+         + Now includes a help file!
+  1.51:  + Wasn't properly responding to WM_SYSCOLORCHANGE message anymore.
+         + Updated for new DFS.INC file, component tab name, history/comments
+           file.
+  1.50:  + Added Register procedure so you can get at the published stuff and
+           see it in action at design-time under Delphi 3!  Sorry, previous
+           versions of Delphi and C++Builder do not support this.
+  1.16:  + Problem with MDI children that were maximized when they did not
+           take up entire client area.
+  1.15:  + Nasty little bug in MDI apps with child controls.
+         + Got the system menu problem fixed so that the paint problem isn't
+           visible the entire time the menu is up.  Now it just flashes.  :(
+         + WindowMenu items were not properly displaying MDI child captions.
+           To fix this, I had to re-introduce a flash in the caption every
+           time the Caption property is changed in an MDI child at run-time.
+  1.14:  + Made CalculateColors a virtual protected method.
+         + Three new properties:
+           GradientStartColor and GradientStopColor to use other than the
+              default gradient colors.  These were added by William O'Connell
+              <woc@A.crl.com>, many thanks to him.
+           CaptionTextColor to change the color of the caption text.
+         + There's some sort of bug in the Windows non-client paint stuff
+           that is causing the non-client area to be painted when the left
+           mouse button is clicked in it.  That's not so bad, except that it
+           paints under the caption buttons in the default system color.
+           I've added a handler for this and WM_SYSCOMMAND (don't ask) and
+           repaint it as soon as I can, but you still see a flash when you
+           click on the border, and you see it the whole time that the system
+           menu is displayed. Please email me if you have any ideas on this.
+  1.13:  + Fixed an off-by-one error in caption button painting. Thanks to
+           Robert Galle for this one.
+  1.12:  + Another MDI bug.  If the MDI child form is not a TdfsGradientForm
+           descendant, the caption text will not update if the child is
+           maximized and the child's caption text is changed.  There is a
+           work-around for this, but it causes an annoying flicker which I
+           can not stand.  If you can stand it, look at the GradClientWndProc
+           method and uncomment the code there.  The better solution, I
+           think, is to make your MDI child form's a descendant of
+           TdfsGradientForm.  For those of you who want your app to be "just
+           like Word", you can use the new FPaintGradient property (below)
+           so that the child windows are never painted with a gradient. This
+           solution doesn't suffer from the flicker problem.
+         + Changed FGradientOnInactive boolean property to FPaintGradient set
+           property.  Three possible values: gfpAlways, gfpActive and
+           gfpNever.
+         + Cleaned up some code that was now longer necessary.  May have sped
+           up the paint time by a nanosecond or two.  :)
+  1.11:  + Fixed problem for people who want gradient MDI child windows.
+         + MDI child caption text changing at runtime when child window was
+           maximized would not update caption text.  Fixed.
+         + Got rid of some of the old painting code that wasn't used, as it
+           didn't work very well anyway.  There are now two painting routines
+           (FillRectGradientHigh, FillRectGradientLow) for high color mode
+           and 256 or less color mode.  The former is faster, but doesn't
+           work on less than high color mode (16-bit depth) because it is
+           "palette stupid".
+  1.10:  + Fixed problem that could cause the caption to be painted all black
+           when first created.
+         + Added OnPaintCaption property.  Makes event available to paint on
+           the caption after the gradient, icon, and buttons have been drawn,
+           but before the text is.  See demo program for example of use.
+  1.04:  + Found a way to get a nice 16x16 version of the icon.  Icon is now
+           drawn much better than before.
+  1.03:  + Fixed problem with redrawing inactive window when
+           GradientOnInactive set to FALSE.
+         + Fixed problem of gradient disappearing if Caption set at run-time.
+         + Fixed all the MDI bugs that I know about.
+         + Gradient would goof up in some cases where window was sized very
+           small horizontally.  Fixed.
+         + Fiddled with the button drawing some more and I think the sizes
+           are finally right under all circumstances.
+         + Didn't recreate the caption font if the user changed it.
+           (WM_SETTINGCHANGE)  I knew about this one for a while, just kept
+           fogetting to fix it...
+         + Resizing window so that it was too small for the caption text to
+           fit in the available space caused it to write under the buttons.
+           It now properly substitutes ellipsis ("...") if the string won't
+           fit.  I was dreading this one until I found that the Delphi Win32
+           docs don't document a DrawText flag (DT_END_ELLIPSIS) that will
+           do this for you automagically.  Happy day. :)
+  1.02:  + Added some new painting routines.  They are controlled below with
+           the conditional defines PAINT-OLD-WAY, STRETCH-WITH-BRUSH and
+           STRETCH-WITH-PEN. Please experiment with them and tell me which
+           you find to be the fastest.
+  1.01:  + Fixed the inactive flashing when GradientOnBackground is set.  It
+           helps if you read the docs instead of assuming you know what it
+           says.... grr....
+         + Fixed problem with incorrect button drawn on maximized windows.
+           Now correctly draws restore button if window is maximized.
+         + Redid button size code.  Should be right now, but still not 100%
+           sure.  The GetSystemMetrics return values don't seem to be correct.
+  1.00:  + Initial release
+

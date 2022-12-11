@@ -1,0 +1,218 @@
+DSAMsg Unit v2.17
+
+Description:
+   A unit that provides "Don't Show Again" dialog and form services.  Included
+   is a form class that you can descend your own forms from, routines for
+   showing standarad TForm descendants, and replacement rountines for the
+   MessageDlg function.  DSA services allow the user to specify whether or
+   not they want to see the dialog or form in the future with only minimal
+   effort on the application programmer's part.
+
+   The dialog has a check box positioned at the bottom left corner which
+   the user can check to specify that he does not wish to see it again. If
+   checked, calling the function again will not display the dialog, it will
+   simply return a default value immediately.
+
+   Procedures to get and set the state of the dialog are also provided so that
+   you can programmatically re-enable a dialog that has been hidden by the user.
+
+
+Contact Information:
+  The lateset version will always be available on the web at:
+    http://www.delphifreestuff.com
+  If you have any questions, comments or suggestions, please use the Delphi
+  Free Stuff Support Forum at:
+    http://www.delphifreestuff.com/discus/
+  If, for some reason, you can not use the web-based support forum, you can
+  email me at bstowers@delphifreestuff.com.  However, the support forum will
+  always take precedence over direct email since it provides a resource that
+  others can use when they have a problem.  Every message posted to the forum
+  is emailed directly to this account, so emailing me directly will not get
+  your message to me any faster.  It will only make the message less important
+  for me to respond to since only one person (you) is benefiting from it
+  instead of everyone interested.  Having said all that, please do email me
+  directly if it is regarding something that isn't really support related,
+  i.e. just to say thanks (as novel as that idea is).
+
+
+Installation:
+  Delphi 1, Delphi 2, C++Builder 1:
+    * Simply place the files in the directory of your choosing.  There is no
+      component involved.
+
+  Delphi 3, 4, 5, C++Builder 3 & 4:
+    * Do one of the following:
+      + Create a new package by selecting File | New and choosing Package from
+        the New tab in the dialog.
+      + Open an existing package file.  I suggest you do this if you already 
+        have a package that you like to use for small, third party components.
+        I specifically have a package named "3rdParty.dpk" that I use for 
+        small components that come from other people.  Or, if you are using
+        several of my components, you might create a "DFS.dpk" package and 
+        use it for all of my DFS components.
+    * In the resulting package window, click the Add button.
+    * In the Add dialog, on the Add Unit tab, enter the full path name of the 
+      component's registration unit (the unit that ends with 'Reg.pas', i.e. 
+      'BrowseDrReg.pas') and click OK.
+    * You may want to add the other source files (*.pas) to the package as 
+      well in the same manner as you did the registration unit.  While this is
+      not required, not doing it will cause compiler warnings when the package
+      is compiled.  The component will function fine either way, but I 
+      personally find the warnings very irritating and am not happy until 
+      every compiler warning and hint is gone.
+    * If this package is new, or it has never been installed, click the 
+      Install button in the package window.  If this package is already 
+      installed in Delphi, click the Compile button.
+      Note that this will NOT add any items to your component palette.  
+      TdfsDSAForm is not a component, but a TForm descendant class.  So, 
+      instead of a component palette icon, you will instead have a new "DFS" 
+      tab added to the Object Repository (File | New).  If you prefer a tab
+      name other than "DFS", you can edit the sDSAFormObjRepositoryPage 
+      constant in DSAMsgReg.pas and recompile the package.  Note that you can 
+      use the name of an existing tab ("Forms" for example) to have the items 
+      added there.
+
+  C++Builder 5 and up:
+    * Perform the "Delphi 3 and up, C++Builder 3 and up" steps above, except
+      for the last step (Compile or Install).
+    * Select the package the component has been added to, and choose 
+      Project | Edit Option Source to open the package options in the editor.
+    * In the entry for PFLAGS, add the "-LUvcl50" option.  For example:
+        <PFLAGS value="-$YD -$W -$O -v -JPHNE -M -LUvcl50"/>
+    * Perform the final step from above, Compile or Install.
+    * For Borland's official word on this situation, open the C++Builder help
+      file and search the index for "dsgnintf.dcu" and see the "Compiling
+      packages with DsgnIntf" section.
+
+  Delphi 6 and up:
+    * Perform the "Delphi 3, 4, 5, C++Builder 3 & 4" steps above, except
+      for the last step (Compile or Install).
+    * Add the DesignIDE package to the Requires list of the package into which
+      the component is being installed.
+    * Perform the final step from above, Compile or Install.
+    * This is necessary because of changes to the design-time support units
+      introduced in Delphi 6.  For complete information, see the Del6New.hlp
+      file in your Delphi 6 Help directory.  In the index, search for
+      "upgrade issues" and in the resulting list of topics, select the
+      "DsgnIntf renamed and related changes" topic.
+
+  Help File:
+    Delphi 1:
+      * Rename DSAMsg16.Hlp to DSAMsg.Hlp.
+      * Copy DSAMsg.Hlp to your Delphi\Bin directory and DSAMsg.Kwf to your
+        Delphi\Help directory.
+      * Use the HelpInst tool included with Delphi to install the DSAMsg.Kwf
+        into Delphi.
+
+    Delphi 2:
+      * Copy DSAMsg.Hlp and DSAMsg.Kwf to your Delphi\Help directory.
+      * Use the HelpInst tool included with Delphi to install the DSAMsg.Kwf
+        into Delphi.
+
+    Delphi 3:
+      * Copy DSAMsg.Hlp to your Delphi\Help directory.
+      * Edit the DELPHI3.CNT file and add the following line to the Index 
+        section:
+          :Index DSAMsg Unit Reference=DSAMsg.hlp
+
+
+Design-Time Access to TdfsDSAForm Properties:
+  NOTE:  This information applies only to Delphi 3 and above, and C++Builder 3
+         and above.  Previous versions of Delphi and C++Builder do NOT support
+         design-time access of TForm descendants.  Sorry.  You can still use
+         this class with those prior versions, you just won't have access to
+         the new properties at design-time.
+  * Create a new application project.
+  * Select File | New and choose the "DFS" tab in the Object Repository window.
+  * Select the "DSA Form" item and click the OK button.
+  * You should now have a new TdfsDSAForm type form added to the project, and
+    when you select it all new properties should be visible in the IDE.
+
+
+Delphi 1 & 2, and C++Builder 1 Notes:
+  * The best way to use this form is to add it to your Object Repository.
+    Simply open this unit in Delphi, right click on the form and select Add
+    To Repository.  Then, when you want a TdfsDSAForm, you just select it
+    from the repository (File | New) and use the "Inherit" option so you
+    don't have to see all this code in your form.
+
+    Delphi 1 & 2: If you have existing forms that you want converted to DSA
+    forms, simply add "DSAMsg" to your "Uses" clause, and change your form's
+    ancestor to TdfsDSAForm.  An example:
+       Change:
+          TMyForm = class(TForm)
+       To:
+          TMyForm = class(TdfsDSAForm)
+
+    C++Builder 1: To convert existing forms, add the DSAMsg.pas file to the
+      project (using Project Manager), then open the form's header file and add:
+
+       #include "dsamsg.hpp"
+
+    above the form class declaration.  Next, change the form's class declaraion:
+      Change:
+        class TForm1 : public TForm
+      To:
+        class TForm1 : public TdfsDSAForm
+
+    And finally, change the form's constructor in the source (.cpp) file:
+      Change:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TForm(Owner)
+        {
+      To:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TdfsDSAForm(Owner)
+        {
+
+
+Known Issues:
+  * There are no known issues at this time.
+
+
+Revision History:
+  2.17:  + Updated for Delphi 6 compatibility.  See updated install directions
+           above.
+  2.16:  + Updated for C++Builder 5 compatibility.
+  2.15:  + It's *really* D5 compatible now.  Small change between the D5 eval
+           version and the real, shipping D5 version broke it.
+  2.14:  + D5 compatibility.
+         + TDSAForm class renamed to TdfsDSAForm.
+  2.13:  + Generated registry/INI keys were using only English characters.
+           Updated to support international characters.  Many thanks to Pavel
+           Kriz for sending this in.
+  2.12:  + Moved hard-coded strings to resourcestrings for Delphi/Builder 3 and
+           higher.  They are normal consts for older compilers.  This aids in
+           internationalizing an app.
+  2.11:  + TdfsDSAForm descendents didn't work in D4.  The DSAShowable property
+           was screwed up.
+  2.10:  + Added real IDE experts (see DSAMsgReg.pas) for proper design-time
+           support of the new properties.  This removes all the old fooling
+           around with the object repository you had to do to install this thing
+           in previous versions.  If you have installed a previous version of
+           this, you can, and should, now delete that old entry from the object
+           repository.  You now use the items on the DFS tab of the object
+           repository to create new TdfsDSAForms.  Please read the installation
+           section above for complete details of what old files should be
+           removed/deleted.
+         + Delphi 4 compatibility.
+  2.03:  + On some systems (no pattern could be found), TdfsDSAForm descendants
+           would reset their showable state on creation.  The DSA_Showable
+           property has been moved from published to public, and this corrects
+           the problem.  You may get a "property does not exist error" when
+           opening a TdfsDSAForm descendant form, just ignore the error.  All
+           changes to this property must now be done in code since it is no
+           longer published.
+  2.02:  + Added Version property to TdfsDSAForm.
+  2.01:  + Fixed INI bug.
+  2.00:  + Hmmm, either there were no bugs (yipee) or nobody is using
+           it (bummer).
+         + Now uses my standard DFS.INC file for conditional defines.
+         + Two new functions, DSAForm and DSAIdentsForm, so you can have the
+           same functionality for your own custom forms that are shown modally.
+           Sorry, can't do modeless since I have no way of hooking into their
+           OnDestroy event to get the value of the checkbox.
+         + Well, this got bigger than I expected.  In short, there's now a
+           help file, a bunch of new routines, and a class you can descend from.
+  1.00:  + Initial release
+

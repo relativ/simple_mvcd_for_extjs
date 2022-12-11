@@ -1,0 +1,183 @@
+object DMData: TDMData
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Left = 217
+  Top = 164
+  Height = 377
+  Width = 329
+  object IBDBCariPro: TIBDatabase
+    Connected = True
+    DatabaseName = 'C:\Programc'#305'l'#305'k\Online Net\CariPro 2\CariPro.GDB'
+    Params.Strings = (
+      'user_name=SYSDBA'
+      'password=masterkey'
+      'lc_ctype=WIN1254')
+    LoginPrompt = False
+    DefaultTransaction = IBTCariPro
+    IdleTimer = 0
+    SQLDialect = 3
+    TraceFlags = []
+    Left = 56
+    Top = 24
+  end
+  object IBTCariPro: TIBTransaction
+    Active = True
+    DefaultDatabase = IBDBCariPro
+    AutoStopAction = saNone
+    Left = 144
+    Top = 24
+  end
+  object islemturleriIBQ: TIBQuery
+    Database = IBDBCariPro
+    Transaction = IBTCariPro
+    BufferChunks = 1000
+    CachedUpdates = False
+    SQL.Strings = (
+      'select * from ISLEMTURLERI')
+    Left = 56
+    Top = 88
+    object islemturleriIBQOTONO: TIntegerField
+      FieldName = 'OTONO'
+      Origin = 'ISLEMTURLERI.OTONO'
+      Required = True
+    end
+    object islemturleriIBQTURADI: TIBStringField
+      FieldName = 'TURADI'
+      Origin = 'ISLEMTURLERI.TURADI'
+      Size = 50
+    end
+    object islemturleriIBQTURKOD: TIntegerField
+      FieldName = 'TURKOD'
+      Origin = 'ISLEMTURLERI.TURKOD'
+    end
+  end
+  object GridStil: TcxStyleRepository
+    Left = 144
+    Top = 88
+    object cxStyle1: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10862530
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle3: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13820129
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle4: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10862530
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle5: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6392205
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = 13820129
+    end
+    object cxStyle6: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 66
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = 13820129
+    end
+    object cxStyle7: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10862530
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle8: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6392205
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle9: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10862530
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clMaroon
+    end
+    object cxStyle11: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6392205
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object GridTableViewStyleSheetBrick: TcxGridTableViewStyleSheet
+      Caption = 'Brick'
+      Styles.Content = cxStyle1
+      Styles.ContentEven = cxStyle2
+      Styles.ContentOdd = cxStyle3
+      Styles.Inactive = cxStyle8
+      Styles.Selection = cxStyle11
+      Styles.Footer = cxStyle4
+      Styles.Group = cxStyle5
+      Styles.GroupByBox = cxStyle6
+      Styles.Header = cxStyle7
+      Styles.Indicator = cxStyle9
+      Styles.Preview = cxStyle10
+      BuiltIn = True
+    end
+  end
+end

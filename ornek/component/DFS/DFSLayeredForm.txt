@@ -1,0 +1,212 @@
+TdfsLayeredForm v1.00 Beta 3
+
+Description:
+   A TForm descendent class that provides access to the features of "layered
+   windows" which are new in Windows 2000.  Layered windows can be translucent
+   (they blend with the things behind them, making it appear as though they are
+   "see through"), have transparent sections (areas that do not exist at all
+   allowing you to make non-rectangular windows similar to the way SetWindowRgn
+   works), or both.  The benefit of using the transparency of a layered window
+   vs. SetWindowRgn is that you don't have to construct a region that describes
+   the non-rectangular area, you simple paint all the area in one color and
+   choose that color as the transparent color.
+
+   NOTE: "Layered windows" were introduced in Windows 2000 and are NOT supported
+   on prior versions of Windows (95, 98, NT 4).  There should be no detremental
+   effects of using it on a previous OS, the form will simply behave as a
+   standard TForm.
+
+Contact Information:
+  The lateset version will always be available on the web at:
+    http://www.delphifreestuff.com
+  If you have any questions, comments or suggestions, please use the Delphi
+  Free Stuff Support Forum at: 
+    http://www.delphifreestuff.com/discus/
+  If, for some reason, you can not use the web-based support forum, you can
+  email me at bstowers@delphifreestuff.com.  However, the support forum will
+  always take precedence over direct email since it provides a resource that
+  others can use when they have a problem.  Every message posted to the forum
+  is emailed directly to this account, so emailing me directly will not get 
+  your message to me any faster.  It will only make the message less important
+  for me to respond to since only one person (you) is benefiting from it
+  instead of everyone interested.  Having said all that, please do email me 
+  directly if it is regarding something that isn't really support related, 
+  i.e. just to say thanks (as novel as that idea is).  
+
+
+Installation:
+  Delphi 1:
+    * Delphi 1 is not supported.
+    
+  Delphi 2, C++Builder 1:
+    * TdfsLayeredForm has not been tested on, and does not officially support 
+      Delphi 2 or C++Builder 1.  However, you should be able to simply place 
+      the files in the directory of your choosing.  There is no component 
+      involved.
+
+  Delphi 3, 4, 5, C++Builder 3 & 4:
+    * Do one of the following:
+      + Create a new package by selecting File | New and choosing Package from
+        the New tab in the dialog.
+      + Open an existing package file.  I suggest you do this if you already 
+        have a package that you like to use for small, third party components.
+        I specifically have a package named "3rdParty.dpk" that I use for 
+        small components that come from other people.  Or, if you are using
+        several of my components, you might create a "DFS.dpk" package and 
+        use it for all of my DFS components.
+    * In the resulting package window, click the Add button.
+    * In the Add dialog, on the Add Unit tab, enter the full path name of the 
+      component's registration unit (the unit that ends with 'Reg.pas', i.e. 
+      'BrowseDrReg.pas') and click OK.
+    * You may want to add the other source files (*.pas) to the package as 
+      well in the same manner as you did the registration unit.  While this is
+      not required, not doing it will cause compiler warnings when the package
+      is compiled.  The component will function fine either way, but I 
+      personally find the warnings very irritating and am not happy until 
+      every compiler warning and hint is gone.
+    * If this package is new, or it has never been installed, click the 
+      Install button in the package window.  If this package is already 
+      installed in Delphi, click the Compile button.
+      Note that this will NOT add any items to your component palette.  
+      TdfsDSAForm is not a component, but a TForm descendant class.  So, 
+      instead of a component palette icon, you will instead have a new "DFS" 
+      tab added to the Object Repository (File | New).  If you prefer a tab
+      name other than "DFS", you can edit the sLayeredFormObjRepositoryPage
+      constant in DFSLayeredFormReg.pas and recompile the package.  Note that
+      you can use the name of an existing tab ("Forms" for example) to have the
+      items added there.
+
+  C++Builder 5 and up:
+    * Perform the "Delphi 3 and up, C++Builder 3 and up" steps above, except
+      for the last step (Compile or Install).
+    * Select the package the component has been added to, and choose 
+      Project | Edit Option Source to open the package options in the editor.
+    * In the entry for PFLAGS, add the "-LUvcl50" option.  For example:
+        <PFLAGS value="-$YD -$W -$O -v -JPHNE -M -LUvcl50"/>
+    * Perform the final step from above, Compile or Install.
+    * For Borland's official word on this situation, open the C++Builder help
+      file and search the index for "dsgnintf.dcu" and see the "Compiling
+      packages with DsgnIntf" section.
+
+  Delphi 6 and up:
+    * Perform the "Delphi 3, 4, 5, C++Builder 3 & 4" steps above, except
+      for the last step (Compile or Install).
+    * Add the DesignIDE package to the Requires list of the package into which
+      the component is being installed.
+    * Perform the final step from above, Compile or Install.
+    * This is necessary because of changes to the design-time support units
+      introduced in Delphi 6.  For complete information, see the Del6New.hlp
+      file in your Delphi 6 Help directory.  In the index, search for
+      "upgrade issues" and in the resulting list of topics, select the
+      "DsgnIntf renamed and related changes" topic.
+
+
+Design-Time Access to TdfsLayeredForm Properties:
+  NOTE:  This information applies only to Delphi 3 and above, and C++Builder 3
+         and above.  Previous versions of Delphi and C++Builder do NOT support
+         design-time access of TForm descendants.  Sorry.  You can should still
+         be able to use this class with those prior versions, you just won't 
+         have access to the new properties at design-time, only in your code at 
+         run-time.
+  * Create a new application project.
+  * Select File | New and choose the "DFS" tab in the Object Repository window.
+  * Select the "Layered Form" item and click the OK button.
+  * You should now have a new TdfsLayeredForm type form added to the project, and
+    when you select it all new properties should be visible in the IDE.
+
+
+Delphi 2, and C++Builder 1 Notes:
+  * Although not officially supported, you may be able to use this class with 
+    Delphi 2 and/or C++Builder 1 by following these directions.
+    The best way to use this form is to add it to your Object Repository.
+    Simply open this unit in Delphi, right click on the form and select Add
+    To Repository.  Then, when you want a TdfsLayeredForm, you just select it
+    from the repository (File | New) and use the "Inherit" option so you
+    don't have to see all this code in your form.
+
+    Delphi 1 & 2: If you have existing forms that you want converted to layered
+    forms, simply add "DFSLayeredForm" to your "Uses" clause, and change your
+    form's ancestor to TdfsLayeredForm.  An example:
+       Change:
+          TMyForm = class(TForm)
+       To:
+          TMyForm = class(TdfsLayeredForm)
+
+    C++Builder 1: To convert existing forms, add the DFSLayeredForm.pas file to
+      the project (using Project Manager), then open the form's header file and
+      add:
+
+       #include "dfslayeredform.hpp"
+
+    above the form class declaration.  Next, change the form's class declaraion:
+      Change:
+        class TForm1 : public TForm
+      To:
+        class TForm1 : public TdfsLayeredForm
+
+    And finally, change the form's constructor in the source (.cpp) file:
+      Change:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TForm(Owner)
+        {
+      To:
+        __fastcall TForm1::TForm1(TComponent* Owner)
+          : TdfsLayeredForm(Owner)
+        {
+
+Documentation:
+  * MousePassthrough: boolean
+    This property, when set to TRUE, will pass all mouse clicks through to the
+    window underneath the TdfsLayeredForm.  Normally, only transparent areas are
+    treated in this manner.  You may find this useful if you are doing some sort
+    of informational display where the form is very translucent and is not meant
+    to be interacted with.  Note that the form will still react to keyboard
+    messages when it has focus (i.e. Alt-F4 will close it).
+  * Opacity: byte
+    This property controls how translucent the form will be.  The allowable
+    range is from 0 to 255, where 0 is completely invisible and 255 is
+    completely opaque (appears as any other window).
+  * UseOpacity: boolean
+    Controls whether the form is translucent or not.  When set to TRUE, the
+    amount of translucency for the form is controlled by the Opacity property.
+  * TransparentColor: TColor
+    Defines the color that should be removed from the form.  All visible
+    elements on the form of this color will be completely removed, thus allowing
+    you to create non-rectangular windows, or non-standard window shapes.  Note
+    that this applies only the client area, not the non-client area (i.e. the
+    title bar is unaffected).
+  * UseTransparentColor: boolean
+    Controls whether the form has transparent areas or not.  If set to TRUE,
+    all areas on the form that match the color in the TransparentColor property
+    will be removed from the form.
+
+
+Notes:
+  * Delphi 6 has added transparency support to TForm (see AlphaBlend,
+    AlphaBlendValue, TransparentColor and TransparentColorValue properties).
+    I have not investigated these new properties enough to know whether
+    I should continue work on this "component" or not.  When I have time
+    to review the new D6 stuff, I may decide to drop this component.
+  * Transparency means that part of the window does not exist.  If you click
+    on a transparent area of the form, that click gets passed through to
+    whatever window is underneath it.
+  * This component was inspired by an article in Windows Developers Journal.
+    I didn't even realize this stuff was in Windows 2000 until I saw it
+    discussed in the May 2000 issue.
+  * For further reading on the new "layered windows" in Windows 2000, see the
+    paper written by Vadim Gorokhovsky and Lou Amadio on Microsoft's site at
+    http://msdn.microsoft.com/library/techart/layerwin.htm
+
+
+Known Issues:
+  * There are no known issues at this time.
+
+
+Revision History:
+  Beta 3:  + Updated for Delphi 6 compatibility.  See updated install directions
+             above.
+  Beta 2:  + Wouldn't run on non-Windows 2000 systems.  I had directly linked to
+             the new external API functions instead of dynamically loading them.
+             Thanks to Jon Robertson for sending me the fixed code.
+           + Updated for C++Builder 5 compatibility.
+  1.00:    + Initial release

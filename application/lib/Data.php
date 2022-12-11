@@ -1,6 +1,6 @@
 <?php 
 	header('Content-Type: application/json; charset=utf-8');
-	class Data extends Object implements IData{
+	class Data extends Object_ implements IData{
 		private $output = "";
 		
 		function __construct(){

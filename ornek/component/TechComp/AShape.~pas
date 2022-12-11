@@ -1,0 +1,223 @@
+unit AShape;
+
+interface
+
+uses
+  Windows, Controls, Messages, SysUtils, Classes, Graphics,  Forms, Dialogs,
+  quickrpt, stdctrls;
+
+
+type
+  TShapeType = (stRectangle, stSquare, stRoundRect, stRoundSquare,
+    stEllipse, stCircle);
+
+  TAShape = class(TCustomControl)
+  private
+    { Private declarations }
+    FPen: TPen;
+    FBrush: TBrush;
+    FShape: TShapeType;
+    FGorunmezFlg: Boolean;
+    FDrawHandle: Boolean;
+    FOnMouseDown: TMouseEvent;
+    FOnMouseMove: TMouseMoveEvent;
+    FOnMouseUp: TMouseEvent;
+    procedure SetBrush(Value: TBrush);
+    procedure SetPen(Value: TPen);
+    procedure SetShape(Value: TShapeType);
+    procedure SetGorunmezFlg(Value: Boolean);
+    procedure SetDrawHandle(Value: Boolean);
+  protected
+    { Protected declarations }
+    procedure WMLButtonDown (var Message: TWMLBUTTONDOWN); message WM_LBUTTONDOWN;
+    procedure WMMouseMove   (var Message: TWMMouseMove); message WM_MOUSEMOVE;
+    procedure WMLButtonUp   (var Message: TWMLButtonUp); message WM_LBUTTONUP;
+    procedure WMRButtonDown (var Message: TWMRBUTTONDOWN); message WM_RBUTTONDOWN;
+    procedure WMRButtonUp   (var Message: TWMRButtonUp); message WM_RBUTTONUP;
+    procedure Paint; override;
+  public
+    { Public declarations }
+    procedure PaintHandle; 
+    constructor Create(AOwner : TComponent); override;
+  published
+    { Published declarations }
+    procedure StyleChanged(Sender: TObject);
+    property Brush        : TBrush read FBrush write SetBrush;
+    property Pen          : TPen read FPen write SetPen;
+    property Shape        : TShapeType read FShape write SetShape default stRectangle;
+    property GorunmezFlg  : Boolean read FGorunmezFlg write SetGorunmezFlg nodefault;
+    property DrawHandle   : Boolean read FDrawHandle write SetDrawHandle default False;
+    property OnMouseDown  : TMouseEvent read FOnMouseDown write FOnMouseDown;
+    property OnMouseMove  : TMouseMoveEvent read FOnMouseMove write FOnMouseMove;
+    property OnMouseUp    : TMouseEvent read FOnMouseUp write FOnMouseUp;
+
+  end;
+
+procedure Register;
+
+implementation
+
+procedure Register;
+begin
+  RegisterComponents('Tech', [TAShape]);
+end;
+
+
+constructor TAShape.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  ControlStyle := ControlStyle + [csReplicatable];
+  Width := 65;
+  Height := 65;
+  FPen := TPen.Create;
+  FPen.OnChange := StyleChanged;
+  FBrush := TBrush.Create;
+  FBrush.OnChange := StyleChanged;
+end;
+
+procedure TAShape.StyleChanged(Sender: TObject);
+begin
+  Invalidate;
+end;
+
+procedure TAShape.SetBrush(Value: TBrush);
+begin
+  FBrush.Assign(Value);
+end;
+
+procedure TAShape.SetPen(Value: TPen);
+begin
+  FPen.Assign(Value);
+end;
+
+procedure TAShape.SetShape(Value: TShapeType);
+begin
+  if FShape <> Value then
+  begin
+    FShape := Value;
+    Invalidate;
+  end;
+end;
+
+
+procedure TAShape.SetGorunmezFlg(Value: Boolean);
+begin
+  FGorunmezFlg := Value;
+end;
+
+procedure TAShape.SetDrawHandle(Value: Boolean);
+begin
+  if Value <> FDrawHandle then
+  begin
+    FDrawHandle:=Value;
+    Invalidate;
+  end;
+end;
+
+
+procedure TAShape.Paint;
+var
+  X, Y, W, H, S: Integer;
+begin
+inherited ;
+  with Canvas do
+  begin
+    Pen := FPen;
+    Brush := FBrush;
+    X := Pen.Width div 2;
+    Y := X;
+    W := Width - Pen.Width + 1;
+    H := Height - Pen.Width + 1;
+    if Pen.Width = 0 then
+    begin
+      Dec(W);
+      Dec(H);
+    end;
+    if W < H then S := W else S := H;
+    if FShape in [stSquare, stRoundSquare, stCircle] then
+    begin
+      Inc(X, (W - S) div 2);
+      Inc(Y, (H - S) div 2);
+      W := S;
+      H := S;
+    end;
+    case FShape of
+      stRectangle, stSquare:
+        Rectangle(X, Y, X + W, Y + H);
+      stRoundRect, stRoundSquare:
+        RoundRect(X, Y, X + W, Y + H, S div 4, S div 4);
+      stCircle, stEllipse:
+        Ellipse(X, Y, X + W, Y + H);
+    end;
+  end;
+   PaintHandle;
+end;
+
+procedure TAShape.PaintHandle;
+var
+   BoxRect: TRect;
+   DC: HDC;
+   MyForm: TCustomForm;
+begin
+  if FDrawHandle then
+  begin
+    MyForm:=GetParentForm(self);
+    MyForm.Canvas.Brush.Color:=clBlue;
+    BoxRect:=Rect(0, 0, 5, 5);
+    DC:=GetDC(Handle);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(Width-5, 0, Width, 5);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(Width-5, Height-5, Width, Height);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(0, Height-5, 5, Height);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect := Rect(Trunc((Width) / 2) - 2, 0, Trunc((Width) / 2) + 3, 5);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(Trunc((Width) / 2) - 2, Height, Trunc((Width) / 2) + 3, Height-5);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(0, Trunc(Height / 2) - 2, 5, Trunc(Height / 2)+3);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    BoxRect:=Rect(Trunc(Width) - 5, Trunc(Height / 2) - 2, Trunc(Width), Trunc(Height / 2)+3);
+    FillRect(DC, BoxRect, MyForm.Canvas.Brush.Handle);
+    ReleaseDC(Handle, DC);
+  end;
+
+end;
+
+procedure TAShape.WMLButtonDown(var Message: TWMLBUTTONDOWN);
+begin
+  inherited;
+  if Assigned(FOnMouseDown) then FOnMouseDown(Self, mbLeft,
+    KeysToShiftState(Message.Keys), Message.XPos, Message.YPos);
+end;
+
+procedure TAShape.WMMouseMove(var Message: TWMMouseMove);
+begin
+  inherited;
+  if Assigned(FOnMouseMove) then FOnMouseMove(Self,
+    KeysToShiftState(Message.Keys), Message.XPos, Message.YPos);
+end;
+
+procedure TAShape.WMLButtonUp(var Message: TWMLButtonUp);
+begin
+  inherited;
+  if Assigned(FOnMouseUp) then FOnMouseUp(Self, mbLeft,
+    KeysToShiftState(Message.Keys), Message.XPos, Message.YPos);
+end;
+
+procedure TAShape.WMRButtonDown(var Message: TWMRBUTTONDOWN);
+begin
+  inherited;
+  if Assigned(FOnMouseDown) then FOnMouseDown(Self, mbLeft,
+    KeysToShiftState(Message.Keys), Message.XPos, Message.YPos);
+end;
+
+procedure TAShape.WMRButtonUp(var Message: TWMRButtonUp);
+begin
+  inherited;
+  if Assigned(FOnMouseUp) then FOnMouseUp(Self, mbLeft,
+    KeysToShiftState(Message.Keys), Message.XPos, Message.YPos);
+end;
+
+end.

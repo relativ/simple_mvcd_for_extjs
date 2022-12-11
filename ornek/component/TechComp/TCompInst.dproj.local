@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2022.01.28 16:46:27.749,C:\laragon\www\muhasebe\ornek\component\TechComp\Audio.pas=</Transaction>
+    <Transaction>2022.01.28 16:47:28.756,C:\laragon\www\muhasebe\ornek\component\TechComp\ModBusProtocol.pas=</Transaction>
+    <Transaction>2022.01.28 16:50:32.730,=vclimg.dcp</Transaction>
+    <Transaction>2022.01.28 16:50:32.745,=vclwinx.dcp</Transaction>
+    <Transaction>2022.01.28 16:50:32.776,=vclx.dcp</Transaction>
+    <Transaction>2022.01.28 16:50:32.792,=vcldb.dcp</Transaction>
+    <Transaction>2022.01.28 16:50:32.808,=adortl.dcp</Transaction>
+    <Transaction>2022.01.28 16:50:32.823,=ibxpress.dcp</Transaction>
+  </Transactions>
+</BorlandProject>
